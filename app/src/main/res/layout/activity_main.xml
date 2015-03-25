@@ -22,7 +22,7 @@
         android:id="@+id/username"
         android:layout_centerVertical="true"
         android:layout_alignEnd="@+id/imageView"
-        android:hint="@string/username"
+        android:hint="@string/brand"
         android:editable="true"
         android:layout_alignParentStart="true"
         android:textColor="#ff000000"
@@ -31,7 +31,7 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/password"
+        android:id="@+id/passwordMain"
         android:layout_below="@+id/username"
         android:layout_alignStart="@+id/username"
         android:layout_alignEnd="@+id/imageView"
@@ -45,22 +45,24 @@
         android:layout_height="wrap_content"
         android:text="@string/login"
         android:id="@+id/login"
-        android:layout_below="@+id/password"
-        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/passwordMain"
         android:background="#CE123E"
         android:textColor="#FFFFFF"
-        android:layout_marginTop="5dp" />
+        android:layout_marginTop="10dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/passwordMain" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/register"
-        android:id="@+id/register"
+        android:id="@+id/registerMain"
         android:background="#CE123E"
         android:textColor="#FFFFFF"
         android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/login"
-        android:layout_marginBottom="5dp" />
+        android:layout_marginBottom="5dp"
+        android:layout_alignEnd="@+id/login" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -68,7 +70,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/or"
         android:id="@+id/textView"
-        android:layout_above="@+id/register"
+        android:layout_above="@+id/registerMain"
         android:layout_centerHorizontal="true"
         android:textColor="#ff000000"
         android:layout_marginBottom="30dp" />

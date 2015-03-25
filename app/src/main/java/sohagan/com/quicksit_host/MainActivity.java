@@ -7,12 +7,15 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.view.View;
+import android.content.Intent;
+
 
 
 public class MainActivity extends Activity {
 
     Button login, register;
     EditText username, pass;
+    String name, password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,23 +28,25 @@ public class MainActivity extends Activity {
     public void initViews() {
 
         username = (EditText) findViewById(R.id.username);
-        pass = (EditText) findViewById(R.id.password);
+        pass = (EditText) findViewById(R.id.passwordMain);
 
         login = (Button) findViewById(R.id.login);
         login.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v){
-
+                Intent i = new Intent(getApplicationContext(), homepageActivity.class);
+                startActivity(i);
             }
         });
 
-        register = (Button) findViewById(R.id.register);
+        register = (Button) findViewById(R.id.registerMain);
         register.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v){
-
+                Intent i = new Intent(getApplicationContext(), registerActivity.class);
+                startActivity(i);
             }
         });
     }
