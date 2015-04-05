@@ -8,7 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.view.View;
 import android.content.Intent;
-
+import android.view.MotionEvent;
+import android.widget.Toast;
 
 
 public class MainActivity extends Activity {
@@ -31,12 +32,26 @@ public class MainActivity extends Activity {
         pass = (EditText) findViewById(R.id.passwordMain);
 
         login = (Button) findViewById(R.id.login);
-        login.setOnClickListener(new View.OnClickListener() {
+        login.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
-            public void onClick(View v){
+            public boolean onTouch(View v, MotionEvent event) {
+
+                name = username.getText().toString();
+                if (name.length() == 0) {
+                    Toast.makeText(getApplicationContext(), "Please enter a username", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+                password = pass.getText().toString();
+                if (password.length() == 0) {
+                    Toast.makeText(getApplicationContext(), "Invalid password", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+
                 Intent i = new Intent(getApplicationContext(), homepageActivity.class);
                 startActivity(i);
+
+                return true;
             }
         });
 
