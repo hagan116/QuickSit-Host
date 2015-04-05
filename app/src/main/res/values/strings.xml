@@ -11,6 +11,10 @@
     <string name="title_activity_homepage">homepageActivity</string>
     <string name="category">Category:</string>
     <string name="address">Address</string>
+    <string name="setWait">Set Wait</string>
+    <string name="waitTime">Approximate Wait</string>
+    <string name="plan">Edit Floor Plan</string>
+    <string name="res">Reservations</string>
 
 
     <string name="title_activity_register">registerActivity</string>
@@ -23,6 +27,7 @@
         <item>Pub</item>
         <item>Indian</item>
         <item>Mexican</item>
+        <item>Greek</item>
         <item>Dessert</item>
         <item>Other</item>
     </string-array>

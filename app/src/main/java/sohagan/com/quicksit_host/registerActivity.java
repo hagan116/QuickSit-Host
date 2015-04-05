@@ -71,7 +71,7 @@ public class registerActivity extends Activity implements AdapterView.OnItemSele
                     Toast.makeText(getApplicationContext(), "Please enter a password", Toast.LENGTH_SHORT).show();
                     return false;
                 }
-
+                Restaurant host = new Restaurant(name, type, password, restaurantLocation);
                 Intent i = new Intent(getApplicationContext(), homepageActivity.class);
                 startActivity(i);
 
