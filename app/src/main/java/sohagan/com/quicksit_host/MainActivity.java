@@ -48,22 +48,13 @@ public class MainActivity extends Activity {
                     return false;
                 }
 
-                Intent i = new Intent(getApplicationContext(), homepageActivity.class);
+                Intent i = new Intent(getApplicationContext(), HomeActivity.class);
                 startActivity(i);
 
                 return true;
             }
         });
 
-        register = (Button) findViewById(R.id.registerMain);
-        register.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v){
-                Intent i = new Intent(getApplicationContext(), registerActivity.class);
-                startActivity(i);
-            }
-        });
     }
 
     @Override

@@ -1,6 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">QuickSit-Host</string>
 
+    <string name="app_name">QuickSit-Host</string>
     <string name="login">Login</string>
     <string name="password">Password</string>
     <string name="username">Username</string>
@@ -15,9 +16,9 @@
     <string name="waitTime">Approximate Wait</string>
     <string name="plan">Edit Floor Plan</string>
     <string name="res">Reservations</string>
+    <string name="title_activity_home">Home</string>
+    <string name="title_activity_register">Register</string>
 
-
-    <string name="title_activity_register">registerActivity</string>
     <string-array name="genres_array">
         <item>None</item>
         <item>Italian</item>
@@ -31,4 +32,10 @@
         <item>Dessert</item>
         <item>Other</item>
     </string-array>
+
+    <string name="hello_blank_fragment">Hello Blank Fragment</string>
+
+    <string name="wait_num">10</string>
+    <string name="wait_min">min.</string>
+
 </resources>
