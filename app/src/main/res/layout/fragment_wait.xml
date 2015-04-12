@@ -13,36 +13,35 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@+id/wait_num"
         android:text="@string/wait_num"
-        android:textSize="150sp"
+        android:textSize="200sp"
         android:textColor="#FFFFFF"
         android:gravity="center"
+        android:layout_marginTop="69dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="110dp" />
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/wait_min"
         android:id="@+id/wait_min"
-        android:layout_centerVertical="true"
-        android:layout_toEndOf="@+id/wait_num"
         android:textColor="#FFFFFF"
-        android:textSize="30sp" />
+        android:textSize="30sp"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/wait_num" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="60dp"
         android:text="@string/setWait"
-        android:id="@+id/range"
-        android:background="#33CCFF"
+        android:id="@+id/wait_butt"
+        android:background="#CE123E"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         android:width="150dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/div"
         android:layout_alignParentEnd="true" />
 
 

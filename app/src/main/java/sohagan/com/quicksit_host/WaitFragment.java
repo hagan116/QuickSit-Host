@@ -1,12 +1,18 @@
 package sohagan.com.quicksit_host;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 
@@ -25,6 +31,9 @@ public class WaitFragment extends Fragment {
     private String tabName;
 
     private OnFragmentInteractionListener mListener;
+
+    private Button waitButt;
+    private TextView waitNum;
 
 
     public static WaitFragment newInstance(String tabName) {
@@ -53,12 +62,67 @@ public class WaitFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_wait, container, false);
 
 
-        TextView waitNum = (TextView) view.findViewById(R.id.wait_num);
-        //waitNum = restaurant.getWait();
+        waitNum = (TextView) view.findViewById(R.id.wait_num);
+        //value = restaurant.getWait();
+        //waitNum.setText(Integer.toString(value));
 
+        waitButt = (Button) view.findViewById(R.id.wait_butt);
+        waitButt.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    //stlye for touches
+                    waitButt.setBackgroundColor(getResources().getColor(R.color.shittyRoses));
+                    waitButt.setTextColor(getResources().getColor(R.color.white));
+
+                    //CALL TO CHANGE THE WAIT TIME
+                    openWaitDialog();
+
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    //style for un-touche
+                    waitButt.setBackgroundColor(getResources().getColor(R.color.white));
+                    waitButt.setTextColor(getResources().getColor(R.color.shittyRoses));
+                }
+                return false;
+            }
+        });
 
 
         return view;
+    }
+
+
+    public void openWaitDialog() {
+        LayoutInflater layoutInflater = LayoutInflater.from(getActivity().getApplicationContext());
+        View dialogView = layoutInflater.inflate(R.layout.dialog_setwait, null);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity().getApplicationContext());
+
+        alertDialogBuilder.setView(dialogView);
+        //INITIALIZE EDIT TEXT
+        final EditText input = (EditText) dialogView.findViewById(R.id.dialog_setwait_setwait);
+
+        //SETUP DIALOG WINDOW
+        alertDialogBuilder.setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // get user input and set it to range value
+                        Editable temp = input.getText();
+                        int val = Integer.parseInt(temp.toString());
+
+                        waitNum.setText(temp);
+                    }
+                })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,	int id) {
+                                dialog.cancel();
+                            }});
+
+        //CREATE THE ALERT DIALOG
+        AlertDialog alert = alertDialogBuilder.create();
+        // SHOW THE ALERT
+        alert.show();
     }
 
     // TODO: Rename method, update argument and hook method into UI event

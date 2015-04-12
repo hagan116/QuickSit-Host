@@ -35,6 +35,7 @@
 
     <string name="hello_blank_fragment">Hello Blank Fragment</string>
 
+    <string name="dialog_setwait_header">Set Wait Time</string>
     <string name="wait_num">10</string>
     <string name="wait_min">min.</string>
 
