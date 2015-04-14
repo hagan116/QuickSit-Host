@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
-    Button login, register;
+    Button login, skip;
     EditText username, pass;
     String name, password;
 
@@ -52,6 +52,15 @@ public class MainActivity extends Activity {
                 startActivity(i);
 
                 return true;
+            }
+        });
+
+        skip = (Button) findViewById(R.id.skip);
+        skip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), HomeActivity.class);
+                startActivity(i);
             }
         });
 

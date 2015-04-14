@@ -18,20 +18,8 @@
     <string name="res">Reservations</string>
     <string name="title_activity_home">Home</string>
     <string name="title_activity_register">Register</string>
+    <string name="skip">Skip</string>
 
-    <string-array name="genres_array">
-        <item>None</item>
-        <item>Italian</item>
-        <item>American</item>
-        <item>Chinese</item>
-        <item>Japanese</item>
-        <item>Pub</item>
-        <item>Indian</item>
-        <item>Mexican</item>
-        <item>Greek</item>
-        <item>Dessert</item>
-        <item>Other</item>
-    </string-array>
 
     <string name="hello_blank_fragment">Hello Blank Fragment</string>
 
