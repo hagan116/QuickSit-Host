@@ -91,7 +91,7 @@ public class TablesFragment extends Fragment implements View.OnClickListener{
         params.setMargins(margin, margin, margin, margin);
         inUse  = new boolean[7];
 
-
+        //initialize views
         total = (TextView) view.findViewById(R.id.total);
         tables = (TextView) view.findViewById(R.id.table_avail);
         t1 = (Button) view.findViewById(R.id.t1);
