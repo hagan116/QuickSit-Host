@@ -2,4 +2,6 @@
 <resources>
     <color name="shittyRoses">#CE123E</color>
     <color name="white">#FFFFFF</color>
+    <color name="used">#ff9494</color>
+    <color name="available">#80ff80</color>
 </resources>
