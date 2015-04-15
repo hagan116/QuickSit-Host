@@ -73,9 +73,6 @@ public class TablesFragment extends Fragment implements View.OnClickListener{
         view.setLayoutParams(params);
         view.setLayoutParams(params);
 
-        //restore the table colors
-        restoreColors();
-
 
         //initialize views
         total = (TextView) view.findViewById(R.id.total);
@@ -95,6 +92,9 @@ public class TablesFragment extends Fragment implements View.OnClickListener{
         t6.setOnClickListener(this);
         t7 = (Button) view.findViewById(R.id.t7);
         t7.setOnClickListener(this);
+
+        //restore the table colors
+        restoreColors();
 
         spinner = (Spinner) view.findViewById(R.id.choice);
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(view.getContext(),
@@ -307,10 +307,10 @@ public class TablesFragment extends Fragment implements View.OnClickListener{
                         t4.setBackgroundColor(getActivity().getResources().getColor(R.color.used));
                     }
                     case 4:{
-                        t5.setBackgroundColor(getActivity().getResources().getColor(R.color.used));
+                        t5.setColor(getActivity().getResources().getColor(R.color.used));
                     }
                     case 5:{
-                        t6.setBackgroundColor(getActivity().getResources().getColor(R.color.used));
+                        t6.setColor(getActivity().getResources().getColor(R.color.used));
                     }
                     case 6:{
                         t7.setBackgroundColor(getActivity().getResources().getColor(R.color.used));
@@ -332,10 +332,10 @@ public class TablesFragment extends Fragment implements View.OnClickListener{
                         t4.setBackgroundColor(getActivity().getResources().getColor(R.color.available));
                     }
                     case 4:{
-                        t5.setBackgroundColor(getActivity().getResources().getColor(R.color.available));
+                        t5.setColor(getActivity().getResources().getColor(R.color.available));
                     }
                     case 5:{
-                        t6.setBackgroundColor(getActivity().getResources().getColor(R.color.available));
+                        t6.setColor(getActivity().getResources().getColor(R.color.available));
                     }
                     case 6:{
                         t7.setBackgroundColor(getActivity().getResources().getColor(R.color.available));
