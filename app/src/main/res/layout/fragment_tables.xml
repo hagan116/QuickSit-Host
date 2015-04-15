@@ -13,18 +13,7 @@
         android:id="@+id/ava"
         android:layout_gravity="left|top"
         android:textColor="#FFFFFF"
-        android:textSize="30sp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/total"
-        android:id="@+id/total_text"
-        android:layout_below="@+id/ava"
-        android:layout_alignParentStart="true"
-        android:textSize="25sp"
-        android:textColor="#ffffff" />
+        android:textSize="35sp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -32,10 +21,12 @@
         android:text="22/64"
         android:id="@+id/total"
         android:textColor="#ffffff"
-        android:layout_alignBottom="@+id/total_text"
-        android:layout_toEndOf="@+id/total_text"
-        android:layout_marginLeft="15dp"
-        android:layout_marginBottom="5dp" />
+        android:layout_marginLeft="10dp"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentEnd="false"
+        android:layout_toEndOf="@id/ava"
+        android:layout_marginTop="7dp"
+        android:textSize="25dp" />
 
     <Button
         android:layout_width="wrap_content"
@@ -43,9 +34,9 @@
         android:text="@string/two"
         android:id="@+id/t1"
         android:background="#80ff80"
-        android:layout_below="@+id/total_text"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="80dp" />
+        android:layout_marginTop="80dp"
+        android:layout_below="@+id/ava" />
 
     <Button
         android:layout_width="wrap_content"

@@ -19,7 +19,7 @@
     <string name="title_activity_home">Home</string>
     <string name="title_activity_register">Register</string>
     <string name="skip">Skip</string>
-    <string name="availability">Availability</string>
+    <string name="availability">Availability:</string>
     <string name="total">Total:</string>
     <string name="two">2</string>
     <string name="four">4</string>
