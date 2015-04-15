@@ -72,6 +72,8 @@ public class TablesFragment extends Fragment implements View.OnClickListener{
         params.setMargins(margin, margin, margin, margin);
         view.setLayoutParams(params);
         view.setLayoutParams(params);
+
+        //restore the table colors
         restoreColors();
 
 
