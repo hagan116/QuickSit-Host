@@ -93,6 +93,7 @@ public class TablesFragment extends Fragment implements View.OnClickListener{
 
         //initialize views
         total = (TextView) view.findViewById(R.id.total);
+        total.setText(Integer.toString(current)+ "/24");
         tables = (TextView) view.findViewById(R.id.table_avail);
         t1 = (Button) view.findViewById(R.id.t1);
         t1.setOnClickListener(this);
