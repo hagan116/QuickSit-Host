@@ -1,6 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" tools:context="sohagan.com.quicksit_host.TablesFragment"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="sohagan.com.quicksit_host.TablesFragment"
     android:background="#494949">
 
     <!-- TODO: Update blank fragment layout -->
@@ -69,24 +72,6 @@
         android:layout_marginTop="43dp" />
 
     <Button
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:text="@string/four"
-        android:id="@+id/t5"
-        android:background="#80ff80"
-        android:layout_above="@+id/t2"
-        android:layout_toEndOf="@+id/ava" />
-
-    <Button
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:text="@string/four"
-        android:id="@+id/t6"
-        android:background="#80ff80"
-        android:layout_above="@+id/t4"
-        android:layout_alignStart="@+id/t5" />
-
-    <Button
         android:layout_width="175dp"
         android:layout_height="wrap_content"
         android:text="@string/eight"
@@ -94,5 +79,23 @@
         android:background="#80ff80"
         android:layout_alignTop="@+id/t4"
         android:layout_alignParentEnd="true" />
+
+    <at.markushi.ui.CircleButton
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:id="@+id/t5"
+        app:cb_color="#80ff80"
+        app:cb_pressedRingWidth="8dip"
+        android:layout_below="@+id/t1"
+        android:layout_alignStart="@+id/t6" />
+
+    <at.markushi.ui.CircleButton
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:id="@+id/t6"
+        app:cb_color="#80ff80"
+        app:cb_pressedRingWidth="8dip"
+        android:layout_below="@+id/t2"
+        android:layout_toEndOf="@+id/ava" />
 
 </RelativeLayout>
