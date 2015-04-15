@@ -24,6 +24,14 @@
     <string name="two">2</string>
     <string name="four">4</string>
     <string name="eight">8</string>
+    <string name="tables">By Table:</string>
+    <string name="dash">______________________________________________________</string>
+    <string-array name="tables_array">
+        <item>Two Person</item>
+        <item>Four Person</item>
+        <item>Eight Person</item>
+    </string-array>
+
 
 
     <string name="hello_blank_fragment">Hello Blank Fragment</string>
