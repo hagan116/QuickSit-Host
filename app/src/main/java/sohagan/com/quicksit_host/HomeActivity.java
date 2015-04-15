@@ -97,7 +97,7 @@ public class HomeActivity extends FragmentActivity {
         @Override
         public Fragment getItem(int position) {
             if (position == 0) {
-                return WaitFragment.newInstance("Wait Time");
+                return WaitFragment.newInstance(5);
             }
             else if (position == 1) {
                 return TablesFragment.newInstance("hey", "hey");
@@ -105,7 +105,7 @@ public class HomeActivity extends FragmentActivity {
             else if (position == 2) {
                 return ReservationsFragment.newInstance("Hello", "Hello");
             }
-            return WaitFragment.newInstance("Wait Time");
+            return WaitFragment.newInstance(5);
         }
 
     }

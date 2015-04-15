@@ -2,9 +2,11 @@ package sohagan.com.quicksit_host;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,24 +17,38 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.util.TypedValue;
 import android.widget.FrameLayout.LayoutParams;
+import android.widget.Toast;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 
 
 public class WaitFragment extends Fragment{
 
     private static final String ARG_PARAM1 = "param1";
 
-    private String tabName;
-
-
     private Button waitButt;
     private TextView waitNum;
+    private int rest_id = 1;
 
 
-    public static WaitFragment newInstance(String tabName) {
+    public static WaitFragment newInstance(int id) {
         WaitFragment fragment = new WaitFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, tabName);
+        args.putInt(ARG_PARAM1, id);
         fragment.setArguments(args);
         return fragment;
     }
@@ -45,7 +61,7 @@ public class WaitFragment extends Fragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            tabName = getArguments().getString(ARG_PARAM1);
+            rest_id = getArguments().getInt(ARG_PARAM1);
         }
     }
 
@@ -107,10 +123,13 @@ public class WaitFragment extends Fragment{
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // get user input and set it to range value
-                        Editable temp = input.getText();
-                        int val = Integer.parseInt(temp.toString());
+                        Editable inputWait = input.getText();
+                        waitNum.setText(inputWait);
 
-                        waitNum.setText(temp);
+                        int wait = Integer.parseInt(inputWait.toString());
+                        //HTTPOST THE WAIT TIME
+                        //PostWaitAsyncTask postWait = new PostWaitAsyncTask();
+                        //postWait.execute(wait, rest_id);
                     }
                 })
                 .setNegativeButton("Cancel",
@@ -125,6 +144,92 @@ public class WaitFragment extends Fragment{
         alert.show();
     }
 
+    class PostWaitAsyncTask extends AsyncTask<Integer, Void, String> {
+
+        @Override
+        protected String doInBackground(Integer... params) {
+            int wait = params[0];
+            int rest_id = params[1];
+            Log.d("ASYNC PARAMS:", Integer.toString(wait));
+            Log.d("ASYNC PARAMS:", Integer.toString(rest_id));
+
+            HttpClient httpClient = new DefaultHttpClient();
+
+            // In a POST request, we don't pass the values in the URL.
+            //Therefore we use only the web page URL as the parameter of the HttpPost argument
+            HttpPost httpPost = new HttpPost("http://www.cyberplays.com/somephpscript.php");
+
+            // Because we are not passing values over the URL, we should have a mechanism to pass the values that can be
+            //uniquely separate by the other end.
+            //To achieve that we use BasicNameValuePair
+            //Things we need to pass with the POST request
+            BasicNameValuePair waitTimePair = new BasicNameValuePair("wait_time", Integer.toString(wait));
+            BasicNameValuePair restaurantIdPair = new BasicNameValuePair("paramPassword", Integer.toString(rest_id));
+
+            // We add the content that we want to pass with the POST request to as name-value pairs
+            //Now we put those sending details to an ArrayList with type safe of NameValuePair
+            ArrayList<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
+            nameValuePairList.add(waitTimePair);
+            nameValuePairList.add(restaurantIdPair);
+
+            try {
+                // UrlEncodedFormEntity is an entity composed of a list of url-encoded pairs.
+                //This is typically useful while sending an HTTP POST request.
+                UrlEncodedFormEntity urlEncodedFormEntity = new UrlEncodedFormEntity(nameValuePairList);
+
+                // setEntity() hands the entity (here it is urlEncodedFormEntity) to the request.
+                httpPost.setEntity(urlEncodedFormEntity);
+
+                try {
+                    // HttpResponse is an interface just like HttpPost.
+                    //Therefore we can't initialize them
+                    HttpResponse httpResponse = httpClient.execute(httpPost);
+
+                    // According to the JAVA API, InputStream constructor do nothing.
+                    //So we can't initialize InputStream although it is not an interface
+                    InputStream inputStream = httpResponse.getEntity().getContent();
+
+                    InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+
+                    BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+                    StringBuilder stringBuilder = new StringBuilder();
+
+                    String bufferedStrChunk = null;
+
+                    while((bufferedStrChunk = bufferedReader.readLine()) != null){
+                        stringBuilder.append(bufferedStrChunk);
+                    }
+
+                    return stringBuilder.toString();
+
+                } catch (ClientProtocolException cpe) {
+                    System.out.println("First Exception caz of HttpResponese :" + cpe);
+                    cpe.printStackTrace();
+                } catch (IOException ioe) {
+                    System.out.println("Second Exception caz of HttpResponse :" + ioe);
+                    ioe.printStackTrace();
+                }
+
+            } catch (UnsupportedEncodingException uee) {
+                System.out.println("An Exception given because of UrlEncodedFormEntity argument :" + uee);
+                uee.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+            if(result.equals("working")){
+                Toast.makeText(getActivity().getApplicationContext(), "HTTP POST is working...", Toast.LENGTH_LONG).show();
+            }else{
+                Toast.makeText(getActivity().getApplicationContext(), "Invalid POST req...", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
 
 
 }
