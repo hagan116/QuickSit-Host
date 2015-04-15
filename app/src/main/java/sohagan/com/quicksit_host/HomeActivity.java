@@ -1,6 +1,6 @@
 package sohagan.com.quicksit_host;
 
-import android.net.Uri;
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -11,7 +11,6 @@ import android.support.v4.view.ViewPager;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
-
 import com.astuetz.PagerSlidingTabStrip;
 
 
@@ -27,23 +26,29 @@ public class HomeActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        initViews();
 
+        ActionBar bar = getActionBar();
+        bar.hide();
+
+        //INITIALIZE VIEWS
+        initViews();
     }
 
     public void initViews(){
 
         tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        tabs.setShouldExpand(true);
         pager = (ViewPager) findViewById(R.id.pager);
         adapter = new MyPagerAdapter(getSupportFragmentManager());
 
         pager.setAdapter(adapter);
 
-        final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources()
-                .getDisplayMetrics());
+        final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 6, getResources().getDisplayMetrics());
         pager.setPageMargin(pageMargin);
 
         tabs.setViewPager(pager);
+        tabs.setIndicatorColor(getResources().getColor(R.color.shittyRoses));
+        tabs.setDividerColor(getResources().getColor(R.color.shittyRoses));
 
 
     }
@@ -70,22 +75,23 @@ public class HomeActivity extends FragmentActivity {
     }
 
 
-    public class MyPagerAdapter extends FragmentPagerAdapter {
+    public class MyPagerAdapter extends FragmentPagerAdapter implements PagerSlidingTabStrip.IconTabProvider {
 
-        private final String[] TITLES = { "WaitTime", "Tables", "Reservations" };
+        //private final String[] TITLES = { "WAIT", "TABLES", "RESERV" };
+        private final int[] ICONS = { R.drawable.ic_wait, R.drawable.ic_table, R.drawable.ic_reserv};
 
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
         @Override
-        public CharSequence getPageTitle(int position) {
-            return TITLES[position];
+        public int getPageIconResId(int position) {
+            return ICONS[position];
         }
 
         @Override
         public int getCount() {
-            return TITLES.length;
+            return ICONS.length;
         }
 
         @Override

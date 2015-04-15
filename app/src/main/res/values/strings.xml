@@ -25,6 +25,6 @@
 
     <string name="dialog_setwait_header">Set Wait Time</string>
     <string name="wait_num">10</string>
-    <string name="wait_min">min.</string>
+    <string name="wait_min">Minutes</string>
 
 </resources>

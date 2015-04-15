@@ -27,8 +27,8 @@
         android:id="@+id/wait_min"
         android:textColor="#FFFFFF"
         android:textSize="30sp"
-        android:layout_centerVertical="true"
-        android:layout_toEndOf="@+id/wait_num" />
+        android:layout_below="@+id/wait_num"
+        android:layout_centerHorizontal="true" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
