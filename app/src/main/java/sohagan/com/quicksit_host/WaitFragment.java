@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -77,10 +78,12 @@ public class WaitFragment extends Fragment{
         FrameLayout fl = new FrameLayout(getActivity());
         fl.setLayoutParams(params);
 
-        final int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources()
+        final int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources()
                 .getDisplayMetrics());
 
         params.setMargins(margin, margin, margin, margin);
+        v.setLayoutParams(params);
+        v.setLayoutParams(params);
 
         //INITIALIZE WAIT TIME AND SET TIME OBTAINED FROM DB
         waitNum = (TextView) v.findViewById(R.id.wait_num);
@@ -106,7 +109,8 @@ public class WaitFragment extends Fragment{
             }
         });
 
-        return v;
+        fl.addView(v);
+        return fl;
     }
 
 

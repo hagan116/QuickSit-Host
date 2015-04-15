@@ -17,8 +17,9 @@ public class TablesFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    Button t1,t2,t3,t4,t5,t6,t7; // buttons represent tables
-    TextView total;
+    private Button t1,t2,t3,t4,t7; // buttons represent tables
+    private at.markushi.ui.CircleButton t5, t6;
+    private TextView total;
     private int current = 24; // the current number of tables in use
     private boolean[] inUse; // each slot corresponds to whether or not a table is in use
 
@@ -140,7 +141,7 @@ public class TablesFragment extends Fragment {
                 }
             }
         });
-        t5 = (Button) view.findViewById(R.id.t5);
+        t5 = (at.markushi.ui.CircleButton) view.findViewById(R.id.t5);
         t5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -156,7 +157,7 @@ public class TablesFragment extends Fragment {
                 }
             }
         });
-        t6 = (Button) view.findViewById(R.id.t6);
+        t6 = (at.markushi.ui.CircleButton) view.findViewById(R.id.t6);
         t6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

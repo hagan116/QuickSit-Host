@@ -4,7 +4,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.cyberplays.sobermonitor.SelectRandomActivity"
     android:id="@+id/select_random"
-    android:background="#494949">
+    android:background="#ffffffff">
 
 
     <TextView
@@ -14,7 +14,7 @@
         android:id="@+id/wait_num"
         android:text="@string/wait_num"
         android:textSize="200sp"
-        android:textColor="#FFFFFF"
+        android:textColor="#ff363636"
         android:gravity="center"
         android:layout_marginTop="69dp"
         android:layout_alignParentTop="true"
@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:text="@string/wait_min"
         android:id="@+id/wait_min"
-        android:textColor="#FFFFFF"
+        android:textColor="#ff363636"
         android:textSize="30sp"
         android:layout_below="@+id/wait_num"
         android:layout_centerHorizontal="true" />
