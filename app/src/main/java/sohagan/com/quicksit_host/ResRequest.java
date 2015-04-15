@@ -11,6 +11,7 @@ public class ResRequest {
     private String resDate;
     private String resTime;
 
+
     public ResRequest(String name, int size, String date, String time){
         this.pName = name;
         this.pSize = size;
