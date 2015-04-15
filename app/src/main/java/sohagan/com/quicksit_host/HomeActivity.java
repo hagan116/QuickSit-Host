@@ -75,8 +75,7 @@ public class HomeActivity extends FragmentActivity {
 
 
     public class MyPagerAdapter extends FragmentPagerAdapter implements PagerSlidingTabStrip.IconTabProvider {
-        private final int[] ICONS = { R.drawable.ic_wait, R.drawable.ic_table, R.drawable.ic_reserv};
-
+        private final int[] ICONS = { R.drawable.ic_wait, R.drawable.ic_tables, R.drawable.ic_request, R.drawable.ic_confirmed};
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);
         }
@@ -93,16 +92,18 @@ public class HomeActivity extends FragmentActivity {
 
         @Override
         public Fragment getItem(int position) {
-            if (position == 0) {
-                return WaitFragment.newInstance(5,10);
+            switch(position) {
+                case 0:
+                    return WaitFragment.newInstance(5,10);
+                case 1:
+                    return TablesFragment.newInstance("hey", "hey");
+                case 2:
+                    return RequestFragment.newInstance("Hello", "Hello");
+                case 3:
+                    return ConfirmedFragment.newInstance("Hi", "Hi");
+                default:
+                    return WaitFragment.newInstance(5,10);
             }
-            else if (position == 1) {
-                return TablesFragment.newInstance("hey", "hey");
-            }
-            else if (position == 2) {
-                return ReservationsFragment.newInstance("Hello", "Hello");
-            }
-            return WaitFragment.newInstance(5,10);
         }
 
     }

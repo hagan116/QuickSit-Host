@@ -20,7 +20,8 @@
         <activity
             android:name=".HomeActivity"
             android:label="@string/title_activity_homepage"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden">
         </activity>
     </application>
 

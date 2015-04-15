@@ -1,6 +1,7 @@
 package sohagan.com.quicksit_host;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -37,13 +40,14 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 
-public class WaitFragment extends Fragment{
+public class WaitFragment extends Fragment implements View.OnTouchListener {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
     private Button waitButt;
     private TextView waitNum;
+    private EditText input;
     private int rest_id = 1, wait_time;
 
 
@@ -71,16 +75,16 @@ public class WaitFragment extends Fragment{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+        //CREATE FRAGMENT VIEWS
         View v = inflater.inflate(R.layout.fragment_wait, container, false);
-
         LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 
         FrameLayout fl = new FrameLayout(getActivity());
         fl.setLayoutParams(params);
 
+        //SET MARGINS
         final int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources()
                 .getDisplayMetrics());
-
         params.setMargins(margin, margin, margin, margin);
         v.setLayoutParams(params);
         v.setLayoutParams(params);
@@ -90,30 +94,32 @@ public class WaitFragment extends Fragment{
         waitNum.setText(Integer.toString(wait_time));
 
         waitButt = (Button) v.findViewById(R.id.wait_butt);
-        waitButt.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    //STYLE FOR TOUCH
-                    waitButt.setBackgroundColor(getActivity().getResources().getColor(R.color.shittyRoses));
-                    waitButt.setTextColor(getActivity().getResources().getColor(R.color.white));
-
-                    openWaitDialog();
-
-                } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    //STYLE FOR UNTOUCH
-                    waitButt.setBackgroundColor(getActivity().getResources().getColor(R.color.white));
-                    waitButt.setTextColor(getActivity().getResources().getColor(R.color.shittyRoses));
-                }
-                return false;
-            }
-        });
+        waitButt.setOnTouchListener(this);
 
         fl.addView(v);
         return fl;
     }
 
+    @Override  //ONTOUCH LISTENINER FOR SET WAIT BUTTON
+    public boolean onTouch(View v, MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            //STYLE FOR TOUCH
+            waitButt.setBackgroundColor(getActivity().getResources().getColor(R.color.white));
+            waitButt.setTextColor(getActivity().getResources().getColor(R.color.shittyRoses));
 
+            openWaitDialog();
+            return false;
+
+        } else if (event.getAction() == MotionEvent.ACTION_UP) {
+            //STYLE FOR UNTOUCH
+            waitButt.setBackgroundColor(getActivity().getResources().getColor(R.color.shittyRoses));
+            waitButt.setTextColor(getActivity().getResources().getColor(R.color.white));
+            return false;
+        }
+        return false;
+    }
+
+    //OPEN DIALOG FOR WAIT INPUT
     public void openWaitDialog() {
         //INFLATE LAYOUT AND INITIALIZE DIALOG
         LayoutInflater layoutInflater = LayoutInflater.from(getActivity().getApplicationContext());
@@ -123,7 +129,8 @@ public class WaitFragment extends Fragment{
 
         alertDialogBuilder.setView(dialogView);
         //INITIALIZE EDIT TEXT
-        final EditText input = (EditText) dialogView.findViewById(R.id.dialog_setwait_setwait);
+        input = (EditText) dialogView.findViewById(R.id.dialog_setwait_setwait);
+
 
         //SETUP DIALOG WINDOW
         alertDialogBuilder.setCancelable(false)
@@ -142,15 +149,16 @@ public class WaitFragment extends Fragment{
                 .setNegativeButton("Cancel",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,	int id) {
-                                dialog.cancel();
-                            }});
+                                dialog.cancel();}});
 
         //CREATE THE ALERT DIALOG
         AlertDialog alert = alertDialogBuilder.create();
         // SHOW THE ALERT
         alert.show();
+
     }
 
+    //ASYNC TASK TO POST WIAT TIME TO DB
     class PostWaitAsyncTask extends AsyncTask<Integer, Void, String> {
 
         @Override

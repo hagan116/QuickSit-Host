@@ -22,37 +22,20 @@ public class TablesFragment extends Fragment implements View.OnClickListener{
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    Button t1;
-    Button t2;
-    Button t3;
-    Button t4;
-    CircleButton t5;
-    CircleButton t6;
-    Button t7; // buttons represent tables
+    Button t1,t2,t3,t4,t7;
+    CircleButton t5,t6;
     Spinner spinner;
-    TextView total;
-    TextView tables;
+    TextView total,tables;
     private String choice;
     private int current = 24; // the current number of tables in use
     private int twos = 4;
     private int fours = 2;
     private int eights = 1;
     private boolean[] inUse; // each slot corresponds to whether or not a table is in use
-    private at.markushi.ui.CircleButton b1, b2, b3;
 
     private String tabName;
     private String mParam2;
 
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment TablesFragment.
-     */
-    //
     public static TablesFragment newInstance(String param1, String param2) {
         TablesFragment fragment = new TablesFragment();
         Bundle args = new Bundle();
@@ -76,19 +59,20 @@ public class TablesFragment extends Fragment implements View.OnClickListener{
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tables, container, false);
-
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
 
         FrameLayout fl = new FrameLayout(getActivity());
         fl.setLayoutParams(params);
 
-        final int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources()
+        //SET MARGINS
+        final int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources()
                 .getDisplayMetrics());
-
         params.setMargins(margin, margin, margin, margin);
+        view.setLayoutParams(params);
+        view.setLayoutParams(params);
+
         inUse  = new boolean[7];
 
         //initialize views
@@ -140,8 +124,8 @@ public class TablesFragment extends Fragment implements View.OnClickListener{
         });
 
 
-        // Inflate the layout for this fragment
-        return view;
+        fl.addView(view);
+        return fl;
     }
 
 
