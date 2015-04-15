@@ -72,7 +72,7 @@ public class TablesFragment extends Fragment implements View.OnClickListener{
         params.setMargins(margin, margin, margin, margin);
         view.setLayoutParams(params);
         view.setLayoutParams(params);
-
+        restoreColors();
 
 
         //initialize views
@@ -119,7 +119,7 @@ public class TablesFragment extends Fragment implements View.OnClickListener{
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                choice = "Two Person";
             }
         });
 
@@ -283,6 +283,61 @@ public class TablesFragment extends Fragment implements View.OnClickListener{
                 total.setText(Integer.toString(current)+ "/24");
                 if (choice.equalsIgnoreCase("eight person")){
                     tables.setText(Integer.toString(eights) + "/1");
+                }
+            }
+        }
+    }
+
+    public void restoreColors() {
+        for (int i = 0; i < inUse.length; i++){
+            if (inUse[i]){
+                switch (i) {
+                    case 0:{
+                        t1.setBackgroundColor(getActivity().getResources().getColor(R.color.used));
+                    }
+                    case 1:{
+                        t2.setBackgroundColor(getActivity().getResources().getColor(R.color.used));
+                    }
+                    case 2:{
+                        t3.setBackgroundColor(getActivity().getResources().getColor(R.color.used));
+                    }
+                    case 3:{
+                        t4.setBackgroundColor(getActivity().getResources().getColor(R.color.used));
+                    }
+                    case 4:{
+                        t5.setBackgroundColor(getActivity().getResources().getColor(R.color.used));
+                    }
+                    case 5:{
+                        t6.setBackgroundColor(getActivity().getResources().getColor(R.color.used));
+                    }
+                    case 6:{
+                        t7.setBackgroundColor(getActivity().getResources().getColor(R.color.used));
+                    }
+                }
+            }
+            else {
+                switch (i) {
+                    case 0:{
+                        t1.setBackgroundColor(getActivity().getResources().getColor(R.color.available));
+                    }
+                    case 1:{
+                        t2.setBackgroundColor(getActivity().getResources().getColor(R.color.available));
+                    }
+                    case 2:{
+                        t3.setBackgroundColor(getActivity().getResources().getColor(R.color.available));
+                    }
+                    case 3:{
+                        t4.setBackgroundColor(getActivity().getResources().getColor(R.color.available));
+                    }
+                    case 4:{
+                        t5.setBackgroundColor(getActivity().getResources().getColor(R.color.available));
+                    }
+                    case 5:{
+                        t6.setBackgroundColor(getActivity().getResources().getColor(R.color.available));
+                    }
+                    case 6:{
+                        t7.setBackgroundColor(getActivity().getResources().getColor(R.color.available));
+                    }
                 }
             }
         }
