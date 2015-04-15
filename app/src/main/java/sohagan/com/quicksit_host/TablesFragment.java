@@ -138,6 +138,9 @@ public class TablesFragment extends Fragment implements View.OnClickListener{
                 t1.setBackgroundColor(getActivity().getResources().getColor(R.color.available));
                 inUse[0] = false;
                 total.setText(Integer.toString(current)+ "/24");
+                if (choice.equalsIgnoreCase("two person")){
+                    tables.setText(Integer.toString(twos) + "/4");
+                }
             }
             else {
                 current = current - 2;
@@ -145,6 +148,9 @@ public class TablesFragment extends Fragment implements View.OnClickListener{
                 t1.setBackgroundColor(getActivity().getResources().getColor(R.color.used));
                 inUse[0] = true;
                 total.setText(Integer.toString(current)+ "/24");
+                if (choice.equalsIgnoreCase("two person")){
+                    tables.setText(Integer.toString(twos) + "/4");
+                }
             }
         }
         else if (v.equals(t2)){
@@ -154,6 +160,9 @@ public class TablesFragment extends Fragment implements View.OnClickListener{
                 t2.setBackgroundColor(getActivity().getResources().getColor(R.color.available));
                 inUse[1] = false;
                 total.setText(Integer.toString(current)+ "/24");
+                if (choice.equalsIgnoreCase("two person")){
+                    tables.setText(Integer.toString(twos) + "/4");
+                }
             }
 
             else {
@@ -162,6 +171,9 @@ public class TablesFragment extends Fragment implements View.OnClickListener{
                 t2.setBackgroundColor(getActivity().getResources().getColor(R.color.used));
                 inUse[1] = true;
                 total.setText(Integer.toString(current)+ "/24");
+                if (choice.equalsIgnoreCase("two person")){
+                    tables.setText(Integer.toString(twos) + "/4");
+                }
             }
         }
         else if (v.equals(t3)){
@@ -171,6 +183,9 @@ public class TablesFragment extends Fragment implements View.OnClickListener{
                 t3.setBackgroundColor(getActivity().getResources().getColor(R.color.available));
                 inUse[2] = false;
                 total.setText(Integer.toString(current)+ "/24");
+                if (choice.equalsIgnoreCase("two person")){
+                    tables.setText(Integer.toString(twos) + "/4");
+                }
             }
             else {
                 current = current - 2;
@@ -178,6 +193,9 @@ public class TablesFragment extends Fragment implements View.OnClickListener{
                 t3.setBackgroundColor(getActivity().getResources().getColor(R.color.used));
                 inUse[2] = true;
                 total.setText(Integer.toString(current)+ "/24");
+                if (choice.equalsIgnoreCase("two person")){
+                    tables.setText(Integer.toString(twos) + "/4");
+                }
             }
         }
         else if (v.equals(t4)){
@@ -187,6 +205,9 @@ public class TablesFragment extends Fragment implements View.OnClickListener{
                 t4.setBackgroundColor(getActivity().getResources().getColor(R.color.available));
                 inUse[3] = false;
                 total.setText(Integer.toString(current)+ "/24");
+                if (choice.equalsIgnoreCase("two person")){
+                    tables.setText(Integer.toString(twos) + "/4");
+                }
             }
             else {
                 current = current - 2;
@@ -194,6 +215,9 @@ public class TablesFragment extends Fragment implements View.OnClickListener{
                 t4.setBackgroundColor(getActivity().getResources().getColor(R.color.used));
                 inUse[3] = true;
                 total.setText(Integer.toString(current)+ "/24");
+                if (choice.equalsIgnoreCase("two person")){
+                    tables.setText(Integer.toString(twos) + "/4");
+                }
             }
         }
         else if (v.equals(t5)){
@@ -203,6 +227,9 @@ public class TablesFragment extends Fragment implements View.OnClickListener{
                 t5.setColor(getActivity().getResources().getColor(R.color.available));
                 inUse[4] = false;
                 total.setText(Integer.toString(current)+ "/24");
+                if (choice.equalsIgnoreCase("four person")){
+                    tables.setText(Integer.toString(fours) + "/2");
+                }
             }
             else {
                 current = current - 4;
@@ -210,6 +237,9 @@ public class TablesFragment extends Fragment implements View.OnClickListener{
                 t5.setColor(getActivity().getResources().getColor(R.color.used));
                 inUse[4] = true;
                 total.setText(Integer.toString(current)+ "/24");
+                if (choice.equalsIgnoreCase("four person")){
+                    tables.setText(Integer.toString(fours) + "/2");
+                }
             }
         }
         else if (v.equals(t6)){
@@ -219,6 +249,9 @@ public class TablesFragment extends Fragment implements View.OnClickListener{
                 t6.setColor(getActivity().getResources().getColor(R.color.available));
                 inUse[5] = false;
                 total.setText(Integer.toString(current)+ "/24");
+                if (choice.equalsIgnoreCase("four person")){
+                    tables.setText(Integer.toString(fours) + "/2");
+                }
             }
             else {
                 current = current - 4;
@@ -226,6 +259,9 @@ public class TablesFragment extends Fragment implements View.OnClickListener{
                 t6.setColor(getActivity().getResources().getColor(R.color.used));
                 inUse[5] = true;
                 total.setText(Integer.toString(current)+ "/24");
+                if (choice.equalsIgnoreCase("four person")){
+                    tables.setText(Integer.toString(fours) + "/2");
+                }
             }
         }
         else if (v.equals(t7)){
@@ -235,6 +271,9 @@ public class TablesFragment extends Fragment implements View.OnClickListener{
                 t7.setBackgroundColor(getActivity().getResources().getColor(R.color.available));
                 inUse[6] = false;
                 total.setText(Integer.toString(current)+ "/24");
+                if (choice.equalsIgnoreCase("eight person")){
+                    tables.setText(Integer.toString(eights) + "/1");
+                }
             }
             else {
                 current = current - 8;
@@ -242,6 +281,9 @@ public class TablesFragment extends Fragment implements View.OnClickListener{
                 t7.setBackgroundColor(getActivity().getResources().getColor(R.color.used));
                 inUse[6] = true;
                 total.setText(Integer.toString(current)+ "/24");
+                if (choice.equalsIgnoreCase("eight person")){
+                    tables.setText(Integer.toString(eights) + "/1");
+                }
             }
         }
     }
