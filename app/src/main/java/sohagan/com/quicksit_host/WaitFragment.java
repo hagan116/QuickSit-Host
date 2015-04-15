@@ -39,16 +39,18 @@ import java.util.ArrayList;
 public class WaitFragment extends Fragment{
 
     private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
 
     private Button waitButt;
     private TextView waitNum;
-    private int rest_id = 1;
+    private int rest_id = 1, wait_time;
 
 
-    public static WaitFragment newInstance(int id) {
+    public static WaitFragment newInstance(int id, int wait) {
         WaitFragment fragment = new WaitFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PARAM1, id);
+        args.putInt(ARG_PARAM2, wait);
         fragment.setArguments(args);
         return fragment;
     }
@@ -62,6 +64,7 @@ public class WaitFragment extends Fragment{
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             rest_id = getArguments().getInt(ARG_PARAM1);
+            wait_time = getArguments().getInt(ARG_PARAM2);
         }
     }
 
@@ -81,8 +84,7 @@ public class WaitFragment extends Fragment{
 
         //INITIALIZE WAIT TIME AND SET TIME OBTAINED FROM DB
         waitNum = (TextView) v.findViewById(R.id.wait_num);
-        //value = restaurant.getWait();
-        //waitNum.setText(Integer.toString(value));
+        waitNum.setText(Integer.toString(wait_time));
 
         waitButt = (Button) v.findViewById(R.id.wait_butt);
         waitButt.setOnTouchListener(new View.OnTouchListener() {
@@ -90,15 +92,15 @@ public class WaitFragment extends Fragment{
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     //STYLE FOR TOUCH
-                    //waitButt.setBackgroundColor(getActivity().getResources().getColor(R.color.shittyRoses));
-                    //waitButt.setTextColor(getActivity().getResources().getColor(R.color.white));
+                    waitButt.setBackgroundColor(getActivity().getResources().getColor(R.color.shittyRoses));
+                    waitButt.setTextColor(getActivity().getResources().getColor(R.color.white));
 
                     openWaitDialog();
 
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
                     //STYLE FOR UNTOUCH
-                    //waitButt.setBackgroundColor(getActivity().getResources().getColor(R.color.white));
-                    //waitButt.setTextColor(getActivity().getResources().getColor(R.color.shittyRoses));
+                    waitButt.setBackgroundColor(getActivity().getResources().getColor(R.color.white));
+                    waitButt.setTextColor(getActivity().getResources().getColor(R.color.shittyRoses));
                 }
                 return false;
             }
@@ -109,6 +111,7 @@ public class WaitFragment extends Fragment{
 
 
     public void openWaitDialog() {
+        //INFLATE LAYOUT AND INITIALIZE DIALOG
         LayoutInflater layoutInflater = LayoutInflater.from(getActivity().getApplicationContext());
         View dialogView = layoutInflater.inflate(R.layout.dialog_setwait, null);
 
@@ -122,7 +125,7 @@ public class WaitFragment extends Fragment{
         alertDialogBuilder.setCancelable(false)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // get user input and set it to range value
+                        //GET USER INPUT FOR WAIT TIME
                         Editable inputWait = input.getText();
                         waitNum.setText(inputWait);
 
@@ -163,8 +166,8 @@ public class WaitFragment extends Fragment{
             //uniquely separate by the other end.
             //To achieve that we use BasicNameValuePair
             //Things we need to pass with the POST request
+            BasicNameValuePair restaurantIdPair = new BasicNameValuePair("rest_id", Integer.toString(rest_id));
             BasicNameValuePair waitTimePair = new BasicNameValuePair("wait_time", Integer.toString(wait));
-            BasicNameValuePair restaurantIdPair = new BasicNameValuePair("paramPassword", Integer.toString(rest_id));
 
             // We add the content that we want to pass with the POST request to as name-value pairs
             //Now we put those sending details to an ArrayList with type safe of NameValuePair

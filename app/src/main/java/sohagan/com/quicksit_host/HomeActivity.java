@@ -2,7 +2,6 @@ package sohagan.com.quicksit_host;
 
 import android.app.ActionBar;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -16,8 +15,6 @@ import com.astuetz.PagerSlidingTabStrip;
 
 public class HomeActivity extends FragmentActivity {
 
-    private final Handler handler = new Handler();
-
     private PagerSlidingTabStrip tabs;
     private ViewPager pager;
     private MyPagerAdapter adapter;
@@ -27,6 +24,7 @@ public class HomeActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        //HIDE ACTION BAR
         ActionBar bar = getActionBar();
         bar.hide();
 
@@ -35,7 +33,7 @@ public class HomeActivity extends FragmentActivity {
     }
 
     public void initViews(){
-
+        //INTIALIZE TABS AND THE PAGER ADAPTER TO CHANGE FRAGMENTS
         tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         tabs.setShouldExpand(true);
         pager = (ViewPager) findViewById(R.id.pager);
@@ -46,6 +44,7 @@ public class HomeActivity extends FragmentActivity {
         final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 6, getResources().getDisplayMetrics());
         pager.setPageMargin(pageMargin);
 
+        // SET PAGE VIEWER AND COLOR STYLING
         tabs.setViewPager(pager);
         tabs.setIndicatorColor(getResources().getColor(R.color.shittyRoses));
         tabs.setDividerColor(getResources().getColor(R.color.shittyRoses));
@@ -76,8 +75,6 @@ public class HomeActivity extends FragmentActivity {
 
 
     public class MyPagerAdapter extends FragmentPagerAdapter implements PagerSlidingTabStrip.IconTabProvider {
-
-        //private final String[] TITLES = { "WAIT", "TABLES", "RESERV" };
         private final int[] ICONS = { R.drawable.ic_wait, R.drawable.ic_table, R.drawable.ic_reserv};
 
         public MyPagerAdapter(FragmentManager fm) {
@@ -97,7 +94,7 @@ public class HomeActivity extends FragmentActivity {
         @Override
         public Fragment getItem(int position) {
             if (position == 0) {
-                return WaitFragment.newInstance(5);
+                return WaitFragment.newInstance(5,10);
             }
             else if (position == 1) {
                 return TablesFragment.newInstance("hey", "hey");
@@ -105,7 +102,7 @@ public class HomeActivity extends FragmentActivity {
             else if (position == 2) {
                 return ReservationsFragment.newInstance("Hello", "Hello");
             }
-            return WaitFragment.newInstance(5);
+            return WaitFragment.newInstance(5,10);
         }
 
     }
