@@ -31,7 +31,7 @@ public class TablesFragment extends Fragment implements View.OnClickListener{
     private int twos = 4;
     private int fours = 2;
     private int eights = 1;
-    private boolean[] inUse; // each slot corresponds to whether or not a table is in use
+    private boolean[] inUse = new boolean[7]; // each slot corresponds to whether or not a table is in use
 
     private String tabName;
     private String mParam2;
@@ -73,7 +73,7 @@ public class TablesFragment extends Fragment implements View.OnClickListener{
         view.setLayoutParams(params);
         view.setLayoutParams(params);
 
-        inUse  = new boolean[7];
+
 
         //initialize views
         total = (TextView) view.findViewById(R.id.total);
