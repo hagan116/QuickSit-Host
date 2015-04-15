@@ -2,6 +2,7 @@ package sohagan.com.quicksit_host;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,58 +75,64 @@ public class TablesFragment extends Fragment implements View.OnClickListener{
         view.setLayoutParams(params);
 
 
+        if (savedInstanceState == null) {
+            //initialize views
+            total = (TextView) view.findViewById(R.id.total);
+            total.setText(Integer.toString(current) + "/24");
+            tables = (TextView) view.findViewById(R.id.table_avail);
+            t1 = (Button) view.findViewById(R.id.t1);
+            t1.setOnClickListener(this);
+            t2 = (Button) view.findViewById(R.id.t2);
+            t2.setOnClickListener(this);
+            t3 = (Button) view.findViewById(R.id.t3);
+            t3.setOnClickListener(this);
+            t4 = (Button) view.findViewById(R.id.t4);
+            t4.setOnClickListener(this);
+            t5 = (at.markushi.ui.CircleButton) view.findViewById(R.id.t5);
+            t5.setOnClickListener(this);
+            t6 = (at.markushi.ui.CircleButton) view.findViewById(R.id.t6);
+            t6.setOnClickListener(this);
+            t7 = (Button) view.findViewById(R.id.t7);
+            t7.setOnClickListener(this);
 
-        //initialize views
-        total = (TextView) view.findViewById(R.id.total);
-        total.setText(Integer.toString(current)+ "/24");
-        tables = (TextView) view.findViewById(R.id.table_avail);
-        t1 = (Button) view.findViewById(R.id.t1);
-        t1.setOnClickListener(this);
-        t2 = (Button) view.findViewById(R.id.t2);
-        t2.setOnClickListener(this);
-        t3 = (Button) view.findViewById(R.id.t3);
-        t3.setOnClickListener(this);
-        t4 = (Button) view.findViewById(R.id.t4);
-        t4.setOnClickListener(this);
-        t5 = (at.markushi.ui.CircleButton) view.findViewById(R.id.t5);
-        t5.setOnClickListener(this);
-        t6 = (at.markushi.ui.CircleButton) view.findViewById(R.id.t6);
-        t6.setOnClickListener(this);
-        t7 = (Button) view.findViewById(R.id.t7);
-        t7.setOnClickListener(this);
+            spinner = (Spinner) view.findViewById(R.id.choice);
+            ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(view.getContext(),
+                    R.array.tables_array, android.R.layout.simple_spinner_item);
+            // Specify the layout to use when the list of choices appears
+            spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            // Apply the adapter to the spinner
+            spinner.setAdapter(spinnerAdapter);
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    choice = (String) parent.getItemAtPosition(position);
+                    if (choice.equalsIgnoreCase("two person")) {
+                        tables.setText(Integer.toString(twos) + "/4");
 
-        spinner = (Spinner) view.findViewById(R.id.choice);
-        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(view.getContext(),
-                R.array.tables_array, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        spinner.setAdapter(spinnerAdapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                choice = (String) parent.getItemAtPosition(position);
-                if (choice.equalsIgnoreCase("two person")){
-                    tables.setText(Integer.toString(twos) + "/4");
+                    } else if (choice.equalsIgnoreCase("four person")) {
+                        tables.setText(Integer.toString(fours) + "/2");
+                    } else if (choice.equalsIgnoreCase("eight person")) {
+                        tables.setText(Integer.toString(eights) + "/1");
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
 
                 }
-                else if (choice.equalsIgnoreCase("four person")){
-                    tables.setText(Integer.toString(fours) + "/2");
-                }
-                else if (choice.equalsIgnoreCase("eight person")){
-                    tables.setText(Integer.toString(eights) + "/1");
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+            });
 
 
-        fl.addView(view);
+            fl.addView(view);
+        }
+
+        recycleTables(view);
+
         return fl;
+    }
+
+    public void recycleTables(View v) {
+        // RUN THROUGH BOOLEAN
     }
 
 
@@ -287,4 +294,5 @@ public class TablesFragment extends Fragment implements View.OnClickListener{
             }
         }
     }
+
 }
