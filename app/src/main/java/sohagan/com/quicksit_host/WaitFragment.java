@@ -1,27 +1,22 @@
 package sohagan.com.quicksit_host;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.util.Log;
-import android.view.Gravity;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.TextView;
-import android.util.TypedValue;
 import android.widget.FrameLayout.LayoutParams;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -48,7 +43,7 @@ public class WaitFragment extends Fragment implements View.OnTouchListener {
     private Button waitButt;
     private TextView waitNum;
     private EditText input;
-    private int rest_id = 1, wait_time;
+    private int rest_id = 1, wait_time = 10;
 
 
     public static WaitFragment newInstance(int id, int wait) {
@@ -142,8 +137,8 @@ public class WaitFragment extends Fragment implements View.OnTouchListener {
 
                         int wait = Integer.parseInt(inputWait.toString());
                         //HTTPOST THE WAIT TIME
-                        //PostWaitAsyncTask postWait = new PostWaitAsyncTask();
-                        //postWait.execute(wait, rest_id);
+                        PostWaitAsyncTask postWait = new PostWaitAsyncTask();
+                        postWait.execute(wait, rest_id);
                     }
                 })
                 .setNegativeButton("Cancel",
@@ -172,7 +167,8 @@ public class WaitFragment extends Fragment implements View.OnTouchListener {
 
             // In a POST request, we don't pass the values in the URL.
             //Therefore we use only the web page URL as the parameter of the HttpPost argument
-            HttpPost httpPost = new HttpPost("http://www.cyberplays.com/somephpscript.php");
+            final String url = "http://cyberplays.com/quicksit/webservice/update_wait.php";
+            HttpPost httpPost = new HttpPost(url);
 
             // Because we are not passing values over the URL, we should have a mechanism to pass the values that can be
             //uniquely separate by the other end.
@@ -184,8 +180,8 @@ public class WaitFragment extends Fragment implements View.OnTouchListener {
             // We add the content that we want to pass with the POST request to as name-value pairs
             //Now we put those sending details to an ArrayList with type safe of NameValuePair
             ArrayList<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
-            nameValuePairList.add(waitTimePair);
             nameValuePairList.add(restaurantIdPair);
+            nameValuePairList.add(waitTimePair);
 
             try {
                 // UrlEncodedFormEntity is an entity composed of a list of url-encoded pairs.
@@ -237,13 +233,13 @@ public class WaitFragment extends Fragment implements View.OnTouchListener {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-
-            if(result.equals("working")){
-                Toast.makeText(getActivity().getApplicationContext(), "HTTP POST is working...", Toast.LENGTH_LONG).show();
-            }else{
-                Toast.makeText(getActivity().getApplicationContext(), "Invalid POST req...", Toast.LENGTH_LONG).show();
-            }
+            //GET HYPED
         }
+    }
+
+
+    public void setWait(int mins) {
+        waitNum.setText(Integer.toString(mins));
     }
 
 

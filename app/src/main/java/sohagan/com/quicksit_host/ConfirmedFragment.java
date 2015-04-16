@@ -1,7 +1,7 @@
 package sohagan.com.quicksit_host;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,14 +13,14 @@ public class ConfirmedFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    private String mParam1;
-    private String mParam2;
+    private int rest_id;
+    private int rest_take;
 
-    public static ConfirmedFragment newInstance(String param1, String param2) {
+    public static ConfirmedFragment newInstance(int param1, int param2) {
         ConfirmedFragment fragment = new ConfirmedFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putInt(ARG_PARAM1, param1);
+        args.putInt(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -33,8 +33,8 @@ public class ConfirmedFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            rest_id = getArguments().getInt(ARG_PARAM1);
+            rest_take = getArguments().getInt(ARG_PARAM2);
         }
     }
 
