@@ -41,6 +41,7 @@ import java.io.UnsupportedEncodingException;
 
 public class HomeActivity extends FragmentActivity {
 
+    //UI ELEMENTS
     private PagerSlidingTabStrip tabs;
     private ViewPager pager;
     private MyPagerAdapter adapter;
@@ -49,7 +50,8 @@ public class HomeActivity extends FragmentActivity {
     int rest_reservation;
     int rest_wait;
 
-    // JSON Node names
+
+    //JSON NODES FOR RESTAURANT HTTPGET
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_RESTAURANTS = "restaurants";
     private static final String TAG_REST_ID = "rest_id";
@@ -175,18 +177,11 @@ public class HomeActivity extends FragmentActivity {
             String url = "http://www.cyberplays.com/quicksit/webservice/connect_and_pull_rests.php";
             JSONObject json = getJSONFromUrl(url);
 
-
             //TO CHECK IF THE JSON IS NULL
             if (json == null)
                 Log.d("JSON IS NULL:", "YES");
-            else {
+            else
                 Log.d("JSON IS NULL:", "NO");
-            }
-
-
-            // Check your log cat for JSON reponse
-            //Log.d("All Restaurants: ", json.toString());
-
 
             try {
                 // Checking for SUCCESS TAG

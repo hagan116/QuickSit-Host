@@ -3,7 +3,7 @@ package sohagan.com.quicksit_host;
 /**
  * Created by Sam on 4/15/15.
  */
-public class ResRequest {
+public class Reservation {
 
 
     private String pName;
@@ -12,7 +12,7 @@ public class ResRequest {
     private String resTime;
 
 
-    public ResRequest(String name, int size, String date, String time){
+    public Reservation(String name, int size, String date, String time){
         this.pName = name;
         this.pSize = size;
         this.resDate = date;

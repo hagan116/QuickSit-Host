@@ -16,6 +16,12 @@ public class ConfirmedFragment extends Fragment {
     private int rest_id;
     private int rest_take;
 
+    //JSON NODES FOR RESERVATION HTTPGET
+    private static final String TAG_RES_NAME = "name";
+    private static final String TAG_RES_SIZE = "p_size";
+    private static final String TAG_RES_DATE = "rest_data";
+    private static final String TAG_RES_TIME = "rest_time";
+
     public static ConfirmedFragment newInstance(int param1, int param2) {
         ConfirmedFragment fragment = new ConfirmedFragment();
         Bundle args = new Bundle();

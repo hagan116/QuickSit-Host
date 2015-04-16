@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -28,6 +29,12 @@ public class RequestFragment extends Fragment {
 
     private int rest_id;
     private int rest_take;
+
+    //JSON NODES FOR RESERVATION HTTPGET
+    private static final String TAG_RES_NAME = "name";
+    private static final String TAG_RES_SIZE = "p_size";
+    private static final String TAG_RES_DATE = "rest_data";
+    private static final String TAG_RES_TIME = "rest_time";
 
     public static RequestFragment newInstance(int param1, int param2) {
         RequestFragment fragment = new RequestFragment();
@@ -85,6 +92,21 @@ public class RequestFragment extends Fragment {
     public void onViewCreated(View v, Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
 
+
+        if (rest_take ==1)
+            yesReservs(v);
+        else
+            noReservs(v);
+
+
+    }
+
+    public void noReservs(View v){
+        mListView.setVisibility(v.INVISIBLE);
+        Toast.makeText(getActivity().getApplicationContext(),"This Restaurant does not take reservations", Toast.LENGTH_SHORT).show();
+    }
+
+    public void yesReservs(View v){
         values = new ArrayList<>();
         values.add("HEY");
         values.add("HEY");
@@ -110,7 +132,6 @@ public class RequestFragment extends Fragment {
                 initiateRefresh();
             }
         });
-
     }
 
     private void initiateRefresh() {
