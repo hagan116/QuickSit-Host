@@ -47,7 +47,7 @@ public class HomeActivity extends FragmentActivity {
     private MyPagerAdapter adapter;
     private int rest_id;
     String rest_name;
-    int rest_reservation;
+    int rest_reservation = 0;
     int rest_wait;
 
 
