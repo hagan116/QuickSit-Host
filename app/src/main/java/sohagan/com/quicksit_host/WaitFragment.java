@@ -78,8 +78,7 @@ public class WaitFragment extends Fragment implements View.OnTouchListener {
         fl.setLayoutParams(params);
 
         //SET MARGINS
-        final int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources()
-                .getDisplayMetrics());
+        final int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources().getDisplayMetrics());
         params.setMargins(margin, margin, margin, margin);
         v.setLayoutParams(params);
         v.setLayoutParams(params);

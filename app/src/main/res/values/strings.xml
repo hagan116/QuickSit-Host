@@ -45,4 +45,6 @@
     <string name="wait_num">10</string>
     <string name="wait_min">Minutes</string>
 
+    <string name="nores">No Reservations..</string>
+
 </resources>

@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -22,6 +22,7 @@ public class RequestFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private TextView txt;
     private ListView mListView;
     private ArrayAdapter<String> mListAdapter;
     public ArrayList<String> values;
@@ -73,6 +74,25 @@ public class RequestFragment extends Fragment {
         v.setLayoutParams(params);
 
 
+        if (rest_take ==1)
+            yesReservs(v);
+        else
+            noReservs(v);
+
+        fl.addView(v);
+        return fl;
+    }
+
+    public void noReservs(View v){
+        mListView = (ListView) v.findViewById(R.id.list1);
+        mListView.setVisibility(v.GONE);
+
+        txt = (TextView) v.findViewById(R.id.no1);
+
+        //Toast.makeText(getActivity().getApplicationContext(),"This Restaurant does not take reservations", Toast.LENGTH_SHORT).show();
+    }
+
+    public void yesReservs(View v){
         //RETRIEVE SWIPEREFRESHLAYOUT
         mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swiperefresh1);
 
@@ -82,31 +102,6 @@ public class RequestFragment extends Fragment {
         //RETRIEVE THE LISTVIEW
         mListView = (ListView) v.findViewById(R.id.list1);
 
-
-        fl.addView(v);
-        return fl;
-    }
-
-
-    @Override
-    public void onViewCreated(View v, Bundle savedInstanceState) {
-        super.onViewCreated(v, savedInstanceState);
-
-
-        if (rest_take ==1)
-            yesReservs(v);
-        else
-            noReservs(v);
-
-
-    }
-
-    public void noReservs(View v){
-        mListView.setVisibility(v.INVISIBLE);
-        Toast.makeText(getActivity().getApplicationContext(),"This Restaurant does not take reservations", Toast.LENGTH_SHORT).show();
-    }
-
-    public void yesReservs(View v){
         values = new ArrayList<>();
         values.add("HEY");
         values.add("HEY");

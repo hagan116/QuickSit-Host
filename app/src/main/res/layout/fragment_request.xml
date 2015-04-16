@@ -3,11 +3,21 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/swiperefresh1"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#ffffff">
 
     <ListView
         android:id="@+id/list1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:background="#ffffff" />
+
+    <TextView
+        android:id="@+id/no1"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="@string/nores"
+        android:gravity="center_vertical|center_horizontal"
+        android:textSize="24sp" />
 
 </android.support.v4.widget.SwipeRefreshLayout>
