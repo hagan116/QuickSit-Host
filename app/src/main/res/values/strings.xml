@@ -25,14 +25,19 @@
     <string name="four">4</string>
     <string name="eight">8</string>
     <string name="tables">By Table:</string>
-    <string name="dash">______________________________________________________</string>
+
     <string-array name="tables_array">
         <item>Two Person</item>
         <item>Four Person</item>
         <item>Eight Person</item>
     </string-array>
 
+    <string name="request_name">Sam</string>
+    <string name="request_size">(3)</string>
+    <string name="request_date">5/5/15</string>
+    <string name="request_time">4:30</string>
 
+    <string name="time_left">32 min.</string>
 
     <string name="hello_blank_fragment">Hello Blank Fragment</string>
 
