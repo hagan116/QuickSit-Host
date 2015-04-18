@@ -9,10 +9,9 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -22,11 +21,10 @@ public class RequestFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private TextView txt;
     private ListView mListView;
-    private ArrayAdapter<String> mListAdapter;
     public ArrayList<String> values;
-    private int i = 1;
+    private ListAdapter adapter;
+    public ArrayList<Reservation> array = new ArrayList<Reservation>();
 
     private int rest_id;
     private int rest_take;
@@ -73,7 +71,6 @@ public class RequestFragment extends Fragment {
         v.setLayoutParams(params);
         v.setLayoutParams(params);
 
-
         if (rest_take ==1)
             yesReservs(v);
         else
@@ -85,11 +82,8 @@ public class RequestFragment extends Fragment {
 
     public void noReservs(View v){
         mListView = (ListView) v.findViewById(R.id.list1);
-        mListView.setVisibility(v.GONE);
 
-        txt = (TextView) v.findViewById(R.id.no1);
-
-        //Toast.makeText(getActivity().getApplicationContext(),"This Restaurant does not take reservations", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity().getApplicationContext(), "This Restaurant does not take reservations", Toast.LENGTH_SHORT).show();
     }
 
     public void yesReservs(View v){
@@ -102,21 +96,15 @@ public class RequestFragment extends Fragment {
         //RETRIEVE THE LISTVIEW
         mListView = (ListView) v.findViewById(R.id.list1);
 
-        values = new ArrayList<>();
-        values.add("HEY");
-        values.add("HEY");
-        values.add("HEY");
-        values.add("HEY");
-        values.add("HEY");
+        array.add(new Reservation("Sam", 3, "4/16/15", "6:30PM"));
+        array.add(new Reservation("Malcolm", 4, "4/16/15", "6:45PM"));
+        array.add(new Reservation("Kevin", 2, "4/16/15", "7:00PM"));
+        array.add(new Reservation("Sally", 2, "4/16/15", "7:15PM"));
+        array.add(new Reservation("Matt", 6, "4/17/15", "8:00PM"));
 
-        mListAdapter = new ArrayAdapter(
-                getActivity(),
-                android.R.layout.simple_list_item_1,
-                android.R.id.text1,
-                values);
-
+        adapter = new ListAdapter(getActivity().getApplicationContext(), R.layout.pending_listview_item, array);
         // Set the adapter between the ListView and its backing data.
-        mListView.setAdapter(mListAdapter);
+        mListView.setAdapter(adapter);
 
         // BEGIN_INCLUDE (setup_refreshlistener)
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -133,31 +121,30 @@ public class RequestFragment extends Fragment {
         Log.i("REFRESH", "initiateRefresh");
 
         //HTTPPOST TO DB TO REFRESH RESERVATIONS REQUEST
-        new GetRequestsAsyncTask().execute(i);
+        new GetRequestsAsyncTask().execute(array);
     }
-    private void onRefreshComplete(ArrayList<String> result) {
+    private void onRefreshComplete(ArrayList<Reservation> result) {
         Log.i("REFRESH", "onRefreshComplete");
 
         // Remove all items from the ListAdapter, and then replace them with the new items
-        mListAdapter.clear();
-        for (String temp : result) {
-            mListAdapter.add(temp);
+        adapter.clear();
+        for (Reservation temp : result) {
+            adapter.add(temp);
         }
-        mListAdapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
 
         // Stop the refreshing indicator
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
-    private class GetRequestsAsyncTask extends AsyncTask<Integer, Void, ArrayList<String>> {
+    private class GetRequestsAsyncTask extends AsyncTask<ArrayList<Reservation>, Void, ArrayList<Reservation>> {
 
-        static final int TASK_DURATION = 3 * 1000; // 3 seconds
+        static final int TASK_DURATION = 2 * 1000; // 3 seconds
 
         @Override
-        protected ArrayList<String> doInBackground(Integer... params) {
-            int ii = params[0];
-            String iii = Integer.toString(ii);
-            Log.d("ASYNC TASK PARAM:", iii);
+        protected ArrayList<Reservation> doInBackground(ArrayList<Reservation>... params) {
+            ArrayList<Reservation> temp = new ArrayList<Reservation>(params[0]);
+            temp.add(new Reservation("Tom", 1, "4/18/15", "9:00PM"));
 
             // Sleep for a small amount of time to simulate a background-task
             try {
@@ -166,17 +153,11 @@ public class RequestFragment extends Fragment {
                 e.printStackTrace();
             }
 
-            //RETURN NEW ARRAY OF STRINGS
-            ArrayList<String> temp = new ArrayList<>();
-            for (int e = 0; e< i+3; e++){
-                temp.add(iii);
-            }
-            i++;
             return temp;
         }
 
         @Override
-        protected void onPostExecute(ArrayList<String> result) {
+        protected void onPostExecute(ArrayList<Reservation> result) {
             super.onPostExecute(result);
 
             // Tell the Fragment that the refresh has completed

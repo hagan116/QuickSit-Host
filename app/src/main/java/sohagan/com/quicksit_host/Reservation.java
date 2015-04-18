@@ -1,8 +1,5 @@
 package sohagan.com.quicksit_host;
 
-/**
- * Created by Sam on 4/15/15.
- */
 public class Reservation {
 
 

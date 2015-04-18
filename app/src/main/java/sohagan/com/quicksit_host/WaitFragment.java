@@ -237,9 +237,4 @@ public class WaitFragment extends Fragment implements View.OnTouchListener {
     }
 
 
-    public void setWait(int mins) {
-        waitNum.setText(Integer.toString(mins));
-    }
-
-
 }

@@ -62,20 +62,30 @@ public class MainActivity extends Activity implements TextView.OnEditorActionLis
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    //STYLE FOR TOUCH
+                    login.setBackgroundColor(getResources().getColor(R.color.white));
+                    login.setTextColor(getResources().getColor(R.color.shittyRoses));
 
-                name = username.getText().toString();
-                if (name.length() == 0) {
-                    Toast.makeText(getApplicationContext(), "Please enter a username", Toast.LENGTH_SHORT).show();
+                    name = username.getText().toString();
+                    if (name.length() == 0) {
+                        Toast.makeText(getApplicationContext(), "Please enter a username", Toast.LENGTH_SHORT).show();
+                        return false;
+                    }
+                    password = pass.getText().toString();
+                    if (password.length() == 0) {
+                        Toast.makeText(getApplicationContext(), "Invalid password", Toast.LENGTH_SHORT).show();
+                        return false;
+                    }
+
+                    return false;
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    //STYLE FOR UNTOUCH
+                    login.setBackgroundColor(getResources().getColor(R.color.shittyRoses));
+                    login.setTextColor(getResources().getColor(R.color.white));
                     return false;
                 }
-                password = pass.getText().toString();
-                if (password.length() == 0) {
-                    Toast.makeText(getApplicationContext(), "Invalid password", Toast.LENGTH_SHORT).show();
-                    return false;
-                }
-
                 new AuthUserAsyncTask().execute(name,password);
-
                 return true;
             }
         });

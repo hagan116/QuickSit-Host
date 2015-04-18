@@ -70,7 +70,7 @@ public class HomeActivity extends FragmentActivity {
 
         Intent i = getIntent();
         rest_id = i.getIntExtra("rest_id", 99);
-        Log.d("REST ID RECEIVED", Integer.toString(rest_id));
+        //Log.d("REST ID RECEIVED", Integer.toString(rest_id));
 
 
         LoadAllRestaurants getAsyncTask = new LoadAllRestaurants();
@@ -176,12 +176,6 @@ public class HomeActivity extends FragmentActivity {
             //CALL getJSONFromURL to obtain JSONObject
             String url = "http://www.cyberplays.com/quicksit/webservice/connect_and_pull_rests.php";
             JSONObject json = getJSONFromUrl(url);
-
-            //TO CHECK IF THE JSON IS NULL
-            if (json == null)
-                Log.d("JSON IS NULL:", "YES");
-            else
-                Log.d("JSON IS NULL:", "NO");
 
             try {
                 // Checking for SUCCESS TAG
