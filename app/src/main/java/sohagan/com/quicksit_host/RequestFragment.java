@@ -13,6 +13,29 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpVersion;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+import org.apache.http.params.HttpProtocolParams;
+import org.apache.http.protocol.HTTP;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 
@@ -24,16 +47,26 @@ public class RequestFragment extends Fragment {
     private ListView mListView;
     public ArrayList<String> values;
     private ListAdapter adapter;
-    public ArrayList<Reservation> array = new ArrayList<Reservation>();
+    public ArrayList<Reservation> array;
 
+    //RESTAURANT BASIC DATA
     private int rest_id;
     private int rest_take;
+    //RESERVATION ID
+    private int reserve_id;
 
     //JSON NODES FOR RESERVATION HTTPGET
-    private static final String TAG_RES_NAME = "name";
-    private static final String TAG_RES_SIZE = "p_size";
-    private static final String TAG_RES_DATE = "rest_data";
-    private static final String TAG_RES_TIME = "rest_time";
+    private static final String TAG_RESERVATIONS = "reservations";
+    private static final String TAG_SUCCESS = "success";
+    private static final String TAG_RES_STATUS = "reserve_status";
+    private static final String TAG_RES_ID = "reserve_id";
+    private static final String TAG_RES_NAME = "reserve_name";
+    private static final String TAG_RES_SIZE = "reserve_size";
+    private static final String TAG_RES_DATE = "reserve_date";
+    private static final String TAG_RES_TIME = "reserve_time";
+
+    //CREATE RESERVATION JSON ARRAY
+    JSONArray reservations = null;
 
     public static RequestFragment newInstance(int param1, int param2) {
         RequestFragment fragment = new RequestFragment();
@@ -71,6 +104,7 @@ public class RequestFragment extends Fragment {
         v.setLayoutParams(params);
         v.setLayoutParams(params);
 
+        //IF IT TAKES RESERVATIONS -> SET UP VIEWS
         if (rest_take ==1)
             yesReservs(v);
         else
@@ -96,14 +130,15 @@ public class RequestFragment extends Fragment {
         //RETRIEVE THE LISTVIEW
         mListView = (ListView) v.findViewById(R.id.list1);
 
-        array.add(new Reservation("Sam", 3, "4/16/15", "6:30PM"));
-        array.add(new Reservation("Malcolm", 4, "4/16/15", "6:45PM"));
-        array.add(new Reservation("Kevin", 2, "4/16/15", "7:00PM"));
-        array.add(new Reservation("Sally", 2, "4/16/15", "7:15PM"));
-        array.add(new Reservation("Matt", 6, "4/17/15", "8:00PM"));
+        //INIT ARRAY AND GET RESERV REQUESTS FROM DB
+        array = new ArrayList<>();
+        new GetReservationsAsyncTask().execute();
 
-        adapter = new ListAdapter(getActivity().getApplicationContext(), R.layout.pending_listview_item, array);
-        // Set the adapter between the ListView and its backing data.
+        //DUMMY LOADING LIST ITEM
+        array.add(new Reservation(5,"LOADING", 5, "05/05/15", "5:55PM"));
+
+        //INIT + SET LISTVIEW ADAPTER
+        adapter = new ListAdapter(getActivity().getApplicationContext(), R.layout.pending_listview_item, array, RequestFragment.this);
         mListView.setAdapter(adapter);
 
         // BEGIN_INCLUDE (setup_refreshlistener)
@@ -111,7 +146,6 @@ public class RequestFragment extends Fragment {
             @Override
             public void onRefresh() {
                 Log.i("REFRESH", "onRefresh called from SwipeRefreshLayout");
-                mSwipeRefreshLayout.setRefreshing(true);
                 initiateRefresh();
             }
         });
@@ -119,39 +153,98 @@ public class RequestFragment extends Fragment {
 
     private void initiateRefresh() {
         Log.i("REFRESH", "initiateRefresh");
-
         //HTTPPOST TO DB TO REFRESH RESERVATIONS REQUEST
-        new GetRequestsAsyncTask().execute(array);
+        mSwipeRefreshLayout.setRefreshing(true);
+        new GetReservationsAsyncTask().execute();
     }
+
     private void onRefreshComplete(ArrayList<Reservation> result) {
         Log.i("REFRESH", "onRefreshComplete");
-
-        // Remove all items from the ListAdapter, and then replace them with the new items
+        //REMOVE ALL ITEMS FROM LIST ADAPTER THEN ADD NEW ONES
         adapter.clear();
         for (Reservation temp : result) {
+            Log.d("NAME",temp.getpName());
             adapter.add(temp);
         }
         adapter.notifyDataSetChanged();
 
-        // Stop the refreshing indicator
+        //STOP THE REFRESHING INDICATOR
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
-    private class GetRequestsAsyncTask extends AsyncTask<ArrayList<Reservation>, Void, ArrayList<Reservation>> {
+    public void confirmReservation(int id) {
+        Log.d("confirmReservation()", "reserveId = " + Integer.toString(reserve_id));
+        reserve_id = id;
+        mSwipeRefreshLayout.setRefreshing(true);
+        new ReservationReplyAsyncTask().execute(1);
+    }
 
-        static final int TASK_DURATION = 2 * 1000; // 3 seconds
+
+    public void denyReservation(int id) {
+        Log.d("denyReservation()",  "reserveId = " + Integer.toString(reserve_id));
+        reserve_id = id;
+        mSwipeRefreshLayout.setRefreshing(true);
+        new ReservationReplyAsyncTask().execute(2);
+    }
+
+    //ASYNC TASK TO RETRIEVE ALL RESERVATIONS
+    private class GetReservationsAsyncTask extends AsyncTask<Void, Void, ArrayList<Reservation>> {
+        final String url = "http://cyberplays.com/quicksit/webservice/pull_reservations.php";
 
         @Override
-        protected ArrayList<Reservation> doInBackground(ArrayList<Reservation>... params) {
-            ArrayList<Reservation> temp = new ArrayList<Reservation>(params[0]);
-            temp.add(new Reservation("Tom", 1, "4/18/15", "9:00PM"));
+        protected ArrayList<Reservation> doInBackground(Void... voids) {
+            //CALL getJSONFromURL to obtain JSONObject
+            JSONObject json = getJSONFromUrl(url);
 
-            // Sleep for a small amount of time to simulate a background-task
+            //TO CHECK IF THE JSON IS NULL
+            if (json == null)
+                Log.d("JSON IS NULL:", "YES");
+            else
+                Log.d("All Reservations: ", json.toString());
+
+            ArrayList<Reservation> temp = new ArrayList<>();
+
             try {
-                Thread.sleep(TASK_DURATION);
-            } catch (InterruptedException e) {
+                // Checking for SUCCESS TAG
+                int success = json.getInt(TAG_SUCCESS);
+
+                if (success == 1) {
+                    Log.d("SUCCESS?", "YEAHH");
+                    //RESERVATIONS FOUND -> GETTING ARRAY OF RESERVATIONS
+                    reservations = json.getJSONArray(TAG_RESERVATIONS);
+
+
+                    //LOOP THROUGH RESERVS AND GET DATA TO CREATE RESERV OBJ
+                    for (int i = 0; i < reservations.length(); i++) {
+                        JSONObject c = reservations.getJSONObject(i);
+
+                        //SEE IF ITS A PENDING RES OR CONFIRMED ONE (0=pending, 1=confirmed)
+                        int reserv_status = c.getInt(TAG_RES_STATUS);
+
+                        //STORE EACH JSON ITEM IN VARIABLE
+                        if (reserv_status == 0){
+                            int reserv_Id = c.getInt(TAG_RES_ID);
+                            String reserv_name = c.getString(TAG_RES_NAME);
+                            int reserv_size = c.getInt(TAG_RES_SIZE);
+                            String reserv_date = c.getString(TAG_RES_DATE);
+                            String reserv_time = c.getString(TAG_RES_TIME);
+
+                            Reservation r = new Reservation(reserv_Id,reserv_name,reserv_size,reserv_date,reserv_time);
+                            temp.add(r);
+                        }
+                    }
+                } else {
+                    //SUCCESS DID NOT RETURN 1. HTTPPOST FAIL
+                    ArrayList<Reservation> fail = new ArrayList<>();
+                    fail.add(new Reservation(5,"LOAD FAIL", 5, "05/05/15", "5:55PM"));
+                    return fail;
+                }
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
+            //IF SUCCESSFUL BUT NO DATA WAS FOUND
+            if (temp.size()==0)
+                temp.add(new Reservation(5,"NO DATA", 5, "05/05/15", "5:55PM"));
 
             return temp;
         }
@@ -159,11 +252,244 @@ public class RequestFragment extends Fragment {
         @Override
         protected void onPostExecute(ArrayList<Reservation> result) {
             super.onPostExecute(result);
-
-            // Tell the Fragment that the refresh has completed
+            //TELL THE FRAGMENT THAT THE REFRESH HAS COMPLETED
             onRefreshComplete(result);
         }
 
-    }
+        //METHOD TO MAKE HTTPPOST AND OBTAIN RETURNED JSON OF RESERVATIONS
+        public JSONObject getJSONFromUrl(String url) {
+            InputStream is = null;
+            JSONObject jObj = null;
+            String json = null;
+            HttpResponse httpResponse;
+
+            // Making HTTP request
+            try {
+                HttpParams params = new BasicHttpParams();
+                HttpConnectionParams.setConnectionTimeout(params, 10000);
+                HttpConnectionParams.setSoTimeout(params, 10000);
+                HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
+                HttpProtocolParams.setContentCharset(params, HTTP.UTF_8);
+                HttpProtocolParams.setUseExpectContinue(params, true);
+                //DEFAULT HTTP CLIENT
+                DefaultHttpClient httpClient = new DefaultHttpClient(params);
+                HttpPost httpPost = new HttpPost(url);
+
+                //SET UP DATA FOR POST
+                BasicNameValuePair restIdPair = new BasicNameValuePair("rest_id", Integer.toString(rest_id));
+                ArrayList<NameValuePair> nameValuePairList = new ArrayList<>();
+                nameValuePairList.add(restIdPair);
+
+                //ENCODING POST DATA
+                httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairList));
+
+                httpResponse = httpClient.execute(httpPost);
+                HttpEntity httpEntity = httpResponse.getEntity();
+                is = httpEntity.getContent();
+            } catch (UnsupportedEncodingException ee) {
+                Log.i("UnsupportedEncodingException...", is.toString());
+            } catch (ClientProtocolException e) {
+                Log.i("ClientProtocolException...", is.toString());
+            } catch (IOException e) {
+                Log.i("IOException...", is.toString());
+            }
+
+            try {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(is, "utf-8"), 8); //old charset iso-8859-1
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line).append("\n");
+                }
+                is.close();
+                reader.close();
+                json = sb.toString();
+                Log.i("StringBuilder...", json);
+            } catch (Exception e) {
+                Log.e("Buffer Error", "Error converting result " + e.toString());
+            }
+            // try parse the string to a JSON object
+            try {
+                jObj = new JSONObject(json);
+                Log.i("TRY:", "1");
+            } catch (Exception e) {
+                Log.e("JSON Parser", "Error parsing data " + e.toString());
+                try {
+                    jObj = new JSONObject(json.substring(json.indexOf("{"), json.lastIndexOf("}") + 1));
+                    Log.i("TRY:", "2");
+                } catch (Exception e0) {
+                    Log.e("JSON Parser0", "Error parsing data [" + e0.getMessage() + "] " + json);
+                    Log.e("JSON Parser0", "Error parsing data " + e0.toString());
+                    try {
+                        jObj = new JSONObject(json.substring(1));
+                        Log.i("TRY:", "3");
+                    } catch (Exception e1) {
+                        Log.e("JSON Parser1", "Error parsing data [" + e1.getMessage() + "] " + json);
+                        Log.e("JSON Parser1", "Error parsing data " + e1.toString());
+                        try {
+                            jObj = new JSONObject(json.substring(2));
+                            Log.i("TRY:", "4");
+                        } catch (Exception e2) {
+                            Log.e("JSON Parser2", "Error parsing data [" + e2.getMessage() + "] " + json);
+                            Log.e("JSON Parser2", "Error parsing data " + e2.toString());
+                            try {
+                                jObj = new JSONObject(json.substring(3));
+                                Log.i("TRY:", "5");
+                            } catch (Exception e3) {
+                                Log.e("JSON Parser3", "Error parsing data [" + e3.getMessage() + "] " + json);
+                                Log.e("JSON Parser3", "Error parsing data " + e3.toString());
+                            }
+                        }
+                    }
+                }
+            }
+            //return JSON String
+            return jObj;
+        }
+    }//END GET ASYNC
+
+
+    //ASYNC TASK TO RETRIEVE ALL RESERVATIONS
+    private class ReservationReplyAsyncTask extends AsyncTask<Integer, Void, Integer> {
+        final String url1 = "http://cyberplays.com/quicksit/webservice/confirm_reservation.php";
+        final String url2 = "http://cyberplays.com/quicksit/webservice/remove_reservation.php";
+        JSONObject json = null;
+
+        @Override
+        protected Integer doInBackground(Integer... params) {
+            //GET PARAMETER TO KNOW IF ITS TO CONFIRM OR DENY RESERVATION (1 = confirm, 0 = deny)
+            Integer action = params[0];
+
+            if (action==1)
+                //CALL getJSONFromURL to obtain JSONObject based on
+                json = getJSONFromUrl(url1);
+            if (action==2)
+                //CALL getJSONFromURL to obtain JSONObject based on
+                json = getJSONFromUrl(url2);
+
+            //TO CHECK IF THE JSON IS NULL
+            if (json == null)
+                Log.d("JSON IS NULL:", "YES");
+            else
+                Log.d("All Reservations: ", json.toString());
+
+            int success = 0;
+            try {
+                // Checking for SUCCESS TAG
+                success = json.getInt(TAG_SUCCESS);
+
+                if (success == 1) {
+                    Log.d("SUCCESS?", "YEAHH");
+                } else {
+                    Log.d("SUCCESS?", "NOOOO");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return success;
+        }
+
+        @Override
+        protected void onPostExecute(Integer success) {
+            super.onPostExecute(success);
+            //IF SUCCESSFUL -> REFRESH LISTVIEW
+            initiateRefresh();
+        }
+
+        //METHOD TO MAKE HTTPPOST AND OBTAIN RETURNED JSON OF RESERVATIONS
+        public JSONObject getJSONFromUrl(String url) {
+            InputStream is = null;
+            JSONObject jObj = null;
+            String json = null;
+            HttpResponse httpResponse;
+
+            // Making HTTP request
+            try {
+                HttpParams params = new BasicHttpParams();
+                HttpConnectionParams.setConnectionTimeout(params, 10000);
+                HttpConnectionParams.setSoTimeout(params, 10000);
+                HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
+                HttpProtocolParams.setContentCharset(params, HTTP.UTF_8);
+                HttpProtocolParams.setUseExpectContinue(params, true);
+                //DEFAULT HTTP CLIENT
+                DefaultHttpClient httpClient = new DefaultHttpClient(params);
+                HttpPost httpPost = new HttpPost(url);
+
+                //SET UP DATA FOR POST
+                BasicNameValuePair restIdPair = new BasicNameValuePair("rest_id", Integer.toString(rest_id));
+                BasicNameValuePair reserveIdPair = new BasicNameValuePair("reserve_id", Integer.toString(reserve_id));
+                Log.d("RESERVE ID CHECK", Integer.toString(reserve_id));
+                ArrayList<NameValuePair> nameValuePairList = new ArrayList<>();
+                nameValuePairList.add(restIdPair);
+                nameValuePairList.add(reserveIdPair);
+
+                //ENCODING POST DATA
+                httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairList));
+
+                httpResponse = httpClient.execute(httpPost);
+                HttpEntity httpEntity = httpResponse.getEntity();
+                is = httpEntity.getContent();
+            } catch (UnsupportedEncodingException ee) {
+                Log.i("UnsupportedEncodingException...", is.toString());
+            } catch (ClientProtocolException e) {
+                Log.i("ClientProtocolException...", is.toString());
+            } catch (IOException e) {
+                Log.i("IOException...", is.toString());
+            }
+
+            try {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(is, "utf-8"), 8); //old charset iso-8859-1
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line).append("\n");
+                }
+                is.close();
+                reader.close();
+                json = sb.toString();
+                Log.i("StringBuilder...", json);
+            } catch (Exception e) {
+                Log.e("Buffer Error", "Error converting result " + e.toString());
+            }
+            // try parse the string to a JSON object
+            try {
+                jObj = new JSONObject(json);
+                Log.i("TRY:", "1");
+            } catch (Exception e) {
+                Log.e("JSON Parser", "Error parsing data " + e.toString());
+                try {
+                    jObj = new JSONObject(json.substring(json.indexOf("{"), json.lastIndexOf("}") + 1));
+                    Log.i("TRY:", "2");
+                } catch (Exception e0) {
+                    Log.e("JSON Parser0", "Error parsing data [" + e0.getMessage() + "] " + json);
+                    Log.e("JSON Parser0", "Error parsing data " + e0.toString());
+                    try {
+                        jObj = new JSONObject(json.substring(1));
+                        Log.i("TRY:", "3");
+                    } catch (Exception e1) {
+                        Log.e("JSON Parser1", "Error parsing data [" + e1.getMessage() + "] " + json);
+                        Log.e("JSON Parser1", "Error parsing data " + e1.toString());
+                        try {
+                            jObj = new JSONObject(json.substring(2));
+                            Log.i("TRY:", "4");
+                        } catch (Exception e2) {
+                            Log.e("JSON Parser2", "Error parsing data [" + e2.getMessage() + "] " + json);
+                            Log.e("JSON Parser2", "Error parsing data " + e2.toString());
+                            try {
+                                jObj = new JSONObject(json.substring(3));
+                                Log.i("TRY:", "5");
+                            } catch (Exception e3) {
+                                Log.e("JSON Parser3", "Error parsing data [" + e3.getMessage() + "] " + json);
+                                Log.e("JSON Parser3", "Error parsing data " + e3.toString());
+                            }
+                        }
+                    }
+                }
+            }
+            //return JSON String
+            return jObj;
+        }
+    }//END GET ASYNC
+
 
 }

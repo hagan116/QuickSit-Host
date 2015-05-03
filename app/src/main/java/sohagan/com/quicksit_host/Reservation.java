@@ -2,20 +2,27 @@ package sohagan.com.quicksit_host;
 
 public class Reservation {
 
-
+    private int resId;
     private String pName;
     private int pSize;
     private String resDate;
     private String resTime;
 
 
-    public Reservation(String name, int size, String date, String time){
+    public Reservation(int resId, String name, int size, String date, String time){
+        this.resId = resId;
         this.pName = name;
         this.pSize = size;
         this.resDate = date;
         this.resTime = time;
     }
 
+    public int getResId() {
+        return resId;
+    }
+    public void setResId(int resId) {
+        this.resId = resId;
+    }
     public String getpName() {
         return pName;
     }

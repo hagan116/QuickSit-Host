@@ -95,6 +95,7 @@ public class MainActivity extends Activity implements TextView.OnEditorActionLis
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), HomeActivity.class);
+                i.putExtra("rest_id", 2);
                 startActivity(i);
             }
         });
