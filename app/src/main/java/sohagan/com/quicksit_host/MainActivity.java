@@ -1,5 +1,6 @@
 package sohagan.com.quicksit_host;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -45,6 +46,12 @@ public class MainActivity extends Activity implements TextView.OnEditorActionLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //HIDE ACTIONBAR
+        ActionBar bar = getActionBar();
+        bar.hide();
+
+        //INIT VIEWS
         initViews();
     }
 
