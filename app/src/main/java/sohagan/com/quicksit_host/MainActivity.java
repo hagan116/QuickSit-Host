@@ -36,7 +36,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends Activity implements TextView.OnEditorActionListener{
 
-    Button login, skip;
+    Button login;
     EditText username, pass;
     String name, password;
 
@@ -96,15 +96,7 @@ public class MainActivity extends Activity implements TextView.OnEditorActionLis
             }
         });
 
-        skip = (Button) findViewById(R.id.skip);
-        skip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), HomeActivity.class);
-                i.putExtra("rest_id", 2);
-                startActivity(i);
-            }
-        });
+
 
     }
 
