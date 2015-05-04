@@ -112,48 +112,32 @@ public class ListAdapter extends ArrayAdapter<Reservation> implements View.OnTou
         notifyDataSetChanged();
     }
 
+    //ON TOUCH TO HANDLE RESERVATION REPLYS
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         Pair p = (Pair) v.getTag();
         int type = p.getX();
         int reserve_id = p.getY();
-        //Log.d("type & reservation id: ", Integer.toString(type) + " " + Integer.toString(reserve_id));
 
         if (type==0){
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                //STYLE FOR TOUCH
-                //noButton.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.white));
-                //noButton.setTextColor(getActivity().getResources().getColor(R.color.shittyRoses));
                 Log.d("NO BUTTON:", " CLICK");
                 frag.denyReservation(reserve_id);
-                //new NoAsyncPost().execute();
-                return false;
-            } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                //STYLE FOR UNTOUCH
-                //noButton.setBackgroundColor(getResources().getColor(R.color.shittyRoses));
-                //noButton.setTextColor(getResources().getColor(R.color.white));
                 return false;
             }
         }
 
         if (type==1) {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                //STYLE FOR TOUCH
-                //yesButton.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.white));
-                //yesButton.setTextColor(getActivity().getResources().getColor(R.color.shittyRoses));
                 Log.d("YES BUTTON:", " CLICK");
                 frag.confirmReservation(reserve_id);
-                return false;
-            } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                //STYLE FOR UNTOUCH
-                //yesButton.setBackgroundColor(getResources().getColor(R.color.shittyRoses));
-                //yesButton.setTextColor(getResources().getColor(R.color.white));
                 return false;
             }
         }
         return true;
     }
 
+    //CLASS TO PASS A PAIR OF INTEGERS AS BUTTON TAG
     private class Pair {
         int x, y;
         Pair(int x, int y) {

@@ -5,4 +5,5 @@
     <color name="used">#ff9494</color>
     <color name="available">#80ff80</color>
     <color name="grey">#ff4a4a4a</color>
+    <color name="green">#ff00ff13</color>
 </resources>

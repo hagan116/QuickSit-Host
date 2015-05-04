@@ -18,14 +18,14 @@ import at.markushi.ui.CircleButton;
 
 public class TablesFragment extends Fragment implements View.OnClickListener{
 
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    //THE FRAGMENT PARAMETERS ARE USELESS IN THIS FRAGMENT  (DONT NEED ANY DATA)
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    Button t1,t2,t3,t4,t7;
-    CircleButton t5,t6;
-    Spinner spinner;
-    TextView total,tables;
+    private Button t1,t2,t3,t4,t7;
+    private CircleButton t5,t6;
+    private Spinner spinner;
+    private TextView total,tables;
     private String choice;
     private int current = 24; // the current number of tables in use
     private int twos = 4;
@@ -131,6 +131,7 @@ public class TablesFragment extends Fragment implements View.OnClickListener{
     }
 
 
+    //ON CLICK TO HANDLE CHANGING COLORS AND VALUE OF AVAILABLE SEATS
     @Override
     public void onClick(View v) {
         if (v.equals(t1)){
@@ -290,6 +291,7 @@ public class TablesFragment extends Fragment implements View.OnClickListener{
         }
     }
 
+    //WHEN RECYCLING THE TAB, CHECK IF WE NEED TO RESTORE THE COLOR OF THE TABLE
     public void restoreColors() {
         for (int i = 0; i < inUse.length; i++){
             if (inUse[i]){

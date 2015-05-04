@@ -12,8 +12,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import com.astuetz.PagerSlidingTabStrip;
 
@@ -68,11 +66,13 @@ public class HomeActivity extends FragmentActivity {
         ActionBar bar = getActionBar();
         bar.hide();
 
+
+        //GET RESTAURANT ID (99 default)
         Intent i = getIntent();
         rest_id = i.getIntExtra("rest_id", 99);
-        //Log.d("REST ID RECEIVED", Integer.toString(rest_id));
 
 
+        //LOAD ALL RESTAURANTS
         LoadAllRestaurants getAsyncTask = new LoadAllRestaurants();
         getAsyncTask.execute(rest_id);
     }
@@ -95,27 +95,7 @@ public class HomeActivity extends FragmentActivity {
         tabs.setDividerColor(getResources().getColor(R.color.shittyRoses));
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_homepage, menu);
-        return true;
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
+    //PAGER ADAPTER TO HANDLE TAB CLICKS
     public class MyPagerAdapter extends FragmentPagerAdapter implements PagerSlidingTabStrip.IconTabProvider {
         private final int[] ICONS = { R.drawable.ic_wait, R.drawable.ic_tables, R.drawable.ic_request, R.drawable.ic_confirmed};
         public MyPagerAdapter(FragmentManager fm) {
@@ -247,8 +227,7 @@ public class HomeActivity extends FragmentActivity {
             }
 
             try {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(
-                        is, "utf-8"), 8); //old charset iso-8859-1
+                BufferedReader reader = new BufferedReader(new InputStreamReader(is, "utf-8"), 8); //old charset iso-8859-1
                 StringBuilder sb = new StringBuilder();
                 String line = null;
                 while ((line = reader.readLine()) != null) {

@@ -66,9 +66,6 @@ public class ConfirmedFragment extends Fragment implements AdapterView.OnItemLon
     private static final String TAG_RES_DATE = "reserve_date";
     private static final String TAG_RES_TIME = "reserve_time";
 
-    //URL TO POST CONFIRMED RESERVATION
-    //private static String postRes_url = "http://cyberplays.com/quicksit/webservice/confirm_reservation.php";
-
     //CREATE RESERVATION JSON ARRAY
     JSONArray reservations = null;
 
@@ -110,6 +107,7 @@ public class ConfirmedFragment extends Fragment implements AdapterView.OnItemLon
         v.setLayoutParams(params);
         v.setLayoutParams(params);
 
+        //CHECK IF THE RESTAURANT TAKES RESERVATIONS AND SET UP VIEWS ACCORDINGLy
         if (rest_take == 1)
             yesReservs(v);
         else
@@ -121,7 +119,6 @@ public class ConfirmedFragment extends Fragment implements AdapterView.OnItemLon
 
     public void noReservs(View v){
         mListView = (ListView) v.findViewById(R.id.list2);
-
         Toast.makeText(getActivity().getApplicationContext(), "This Restaurant does not take reservations", Toast.LENGTH_SHORT).show();
     }
 
@@ -164,7 +161,6 @@ public class ConfirmedFragment extends Fragment implements AdapterView.OnItemLon
         mSwipeRefreshLayout.setRefreshing(true);
         //HTTPPOST TO DB TO REFRESH RESERVATIONS REQUEST
         new GetReservationsAsyncTask().execute();
-        Toast.makeText(getActivity().getApplicationContext(), "Reservation removed.", Toast.LENGTH_SHORT).show();
     }
 
     private void onRefreshComplete(ArrayList<Reservation> result) {
@@ -181,6 +177,7 @@ public class ConfirmedFragment extends Fragment implements AdapterView.OnItemLon
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
+    //ON LONG CLICK REMOVE ITEM FROM THE LIST
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
         reserve_id = array.get(position).getResId();
@@ -193,6 +190,7 @@ public class ConfirmedFragment extends Fragment implements AdapterView.OnItemLon
         return false;
     }
 
+    //ASYNC TASK TO RETRIEVE ALL RESERVATIONS
     private class GetReservationsAsyncTask extends AsyncTask<Void, Void, ArrayList<Reservation>> {
         private InputStream is = null;
         private JSONObject jObj = null;
@@ -354,7 +352,7 @@ public class ConfirmedFragment extends Fragment implements AdapterView.OnItemLon
         }
     }
 
-    //ASYNC TASK TO RETRIEVE ALL RESERVATIONS
+    //ASYNC TASK TO TAKE OUT RERSERVATION FROM LIST
     private class ReservationReplyAsyncTask extends AsyncTask<Void, Void, Integer> {
         final String url = "http://cyberplays.com/quicksit/webservice/remove_reservation.php";
         JSONObject json = null;
@@ -389,6 +387,7 @@ public class ConfirmedFragment extends Fragment implements AdapterView.OnItemLon
         protected void onPostExecute(Integer success) {
             super.onPostExecute(success);
             //IF SUCCESSFUL -> REFRESH LISTVIEW
+            Toast.makeText(getActivity().getApplicationContext(), "Reservation removed.", Toast.LENGTH_SHORT).show();
             initiateRefresh();
         }
 

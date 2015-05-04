@@ -1,5 +1,8 @@
 package sohagan.com.quicksit_host;
 
+
+//RESERVATION OBJECT CLASS WITH INSTANCE VARIABLES
+//SELF EXPLANITORY
 public class Reservation {
 
     private int resId;

@@ -8,8 +8,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -56,8 +54,8 @@ public class MainActivity extends Activity implements TextView.OnEditorActionLis
     }
 
 
+    //INITIALIZE AND SET VIEWS
     public void initViews() {
-
         username = (EditText) findViewById(R.id.username);
         username.setOnEditorActionListener(this);
 
@@ -65,6 +63,7 @@ public class MainActivity extends Activity implements TextView.OnEditorActionLis
         pass.setOnEditorActionListener(this);
 
         login = (Button) findViewById(R.id.login);
+        //ON TOUCH OF LOGIN BUTTON, LOGIN!
         login.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
@@ -87,12 +86,12 @@ public class MainActivity extends Activity implements TextView.OnEditorActionLis
 
                     return false;
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    new AuthUserAsyncTask().execute(name,password);
                     //STYLE FOR UNTOUCH
                     login.setBackgroundColor(getResources().getColor(R.color.shittyRoses));
                     login.setTextColor(getResources().getColor(R.color.white));
                     return false;
                 }
-                new AuthUserAsyncTask().execute(name,password);
                 return true;
             }
         });
@@ -183,6 +182,7 @@ public class MainActivity extends Activity implements TextView.OnEditorActionLis
             return null;
         }
 
+        //ON POST EXECUTE IF SUCCESS = 1 THEN INTENT TO NEXT PAGE
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
@@ -205,27 +205,5 @@ public class MainActivity extends Activity implements TextView.OnEditorActionLis
             }
 
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

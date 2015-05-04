@@ -100,7 +100,7 @@ public class WaitFragment extends Fragment implements View.OnTouchListener {
             //STYLE FOR TOUCH
             waitButt.setBackgroundColor(getActivity().getResources().getColor(R.color.white));
             waitButt.setTextColor(getActivity().getResources().getColor(R.color.shittyRoses));
-
+            //WAIT DIALOG TO SET THE NEW WAIT TIME
             openWaitDialog();
             return false;
 
@@ -135,7 +135,7 @@ public class WaitFragment extends Fragment implements View.OnTouchListener {
                         waitNum.setText(inputWait);
 
                         int wait = Integer.parseInt(inputWait.toString());
-                        //HTTPOST THE WAIT TIME
+                        //HTTPOST THE WAIT TIME TO THE DATABASE
                         PostWaitAsyncTask postWait = new PostWaitAsyncTask();
                         postWait.execute(wait, rest_id);
                     }
